@@ -1,7 +1,7 @@
 const registerForm = document.getElementById("registerForm");
 
-if(registerForm){
-    registerForm.addEventListener("submit", function(e){
+if (registerForm) {
+    registerForm.addEventListener("submit", function (e) {
         e.preventDefault();
 
         const fullName = document.querySelector('input[placeholder="Full Name"]').value;
@@ -10,7 +10,7 @@ if(registerForm){
         const password = document.getElementById("regPassword").value;
         const confirmPassword = document.getElementById("confirmPassword").value;
 
-        if(password !== confirmPassword){
+        if (password !== confirmPassword) {
             alert("Passwords do not match!");
             return;
         }
@@ -23,6 +23,8 @@ if(registerForm){
         };
 
         localStorage.setItem("registeredUser", JSON.stringify(userData));
+
+        localStorage.setItem("currentUser", JSON.stringify(userData));
 
         alert("Registration Successful ✅");
 

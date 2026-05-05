@@ -1,5 +1,16 @@
 window.addEventListener("load", () => {
 
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (currentUser) {
+        document.getElementById("welcomeName").innerText =
+            currentUser.fullName + " 👋";
+
+        document.getElementById("userNameTop").innerText =
+            currentUser.fullName;
+    }
+
+
     const status = localStorage.getItem("attendanceStatus");
     const time = localStorage.getItem("checkInTime");
     const date = localStorage.getItem("attendanceDate");
@@ -26,7 +37,8 @@ window.addEventListener("load", () => {
         percent + "%";
 });
 
-function logout(){
+function logout() {
+    localStorage.removeItem("currentUser");
     alert("Logged Out");
-    window.location.href = "index.html";
+    window.location.href = "login.html";
 }
