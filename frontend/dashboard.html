@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,91 +8,89 @@
     <link rel="stylesheet" href="dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
 
-<div class="dashboard-container">
+    <div class="dashboard-container">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <h2>Smart Attendance System</h2>
+        <aside class="sidebar">
+            <h2>Smart Attendance System</h2>
 
-        <ul>
-            <li class="active"><i class="fas fa-house"></i> Dashboard</li>
-            <li onclick="location.href='mark-attendance.html'"><i class="fas fa-camera"></i> Mark Attendance</li>
-            <li onclick="location.href='history.html'"><i class="fas fa-clock-rotate-left"></i> Attendance History</li>
-            <li onclick="logout()"><i class="fas fa-right-from-bracket"></i> Logout</li>
-        </ul>
-    </aside>
+            <ul>
+                <li class="active"><i class="fas fa-house"></i> Dashboard</li>
+                <li onclick="location.href='mark-attendance.html'"><i class="fas fa-camera"></i> Mark Attendance</li>
+                <li onclick="location.href='history.html'"><i class="fas fa-clock-rotate-left"></i> Attendance History
+                </li>
+                <li onclick="logout()"><i class="fas fa-right-from-bracket"></i> Logout</li>
+            </ul>
+        </aside>
 
-    <!-- Main Content -->
-    <main class="main-content">
+        <main class="main-content">
 
-        <div class="top-header">
-            <h1>Dashboard</h1>
-            <div class="user-info">
-                <span id="userNameTop">User</span>
-            </div>
-        </div>
-
-        <!-- Welcome -->
-        <section class="welcome-banner">
-            <div>
-                <p>Welcome back,</p>
-                <h2 id="welcomeName">Student 👋</h2>
-                <span>BTech Computer Science</span>
-            </div>
-        </section>
-
-        <!-- Stats -->
-        <section class="stats-grid">
-
-            <div class="stat-card">
-                <h3>Today's Status</h3>
-                <p id="attendanceStatus">Absent <i class="fas fa-circle-check"></i></p>
-            </div>
-
-            <div class="stat-card">
-                <h3>Check-in Time</h3>
-                <p id="checkInTime">--:-- <i class="fas fa-clock"></i></p>
-            </div>
-
-            <div class="stat-card">
-                <h3>Date</h3>
-                <p id="attendanceDate">--/--/---- <i class="fas fa-calendar"></i></p>
-            </div>
-
-            <div class="stat-card">
-                <h3>Total Attendance</h3>
-                <p id="totalAttendance">0</p>
-            </div>
-
-            <div class="stat-card">
-                <h3>Attendance %</h3>
-                <p id="attendancePercent">0%</p>
-            </div>
-
-        </section>
-
-        <!-- Quick Actions -->
-        <section class="quick-actions">
-            <h2>Quick Actions</h2>
-
-            <div class="action-grid">
-                <div class="action-card" onclick="location.href='mark-attendance.html'">
-                    <i class="fas fa-camera"></i>
-                    Mark Attendance
-                </div>
-
-                <div class="action-card" onclick="location.href='history.html'">
-                    <i class="fas fa-file-lines"></i>
-                    Attendance History
+            <div class="top-header">
+                <h1>Dashboard</h1>
+                <div class="user-info">
+                    <span id="userNameTop">User</span>
                 </div>
             </div>
-        </section>
 
-    </main>
-</div>
+            <section class="welcome-banner">
+                <div>
+                    <p>Welcome back,</p>
+                    <h2 id="welcomeName">Student 👋</h2>
+                    <span>BTech Computer Science</span>
+                </div>
+            </section>
 
-<script src="dashboard.js"></script>
+            <section class="stats-grid">
+
+                <div class="stat-card">
+                    <h3>Today's Status</h3>
+                    <p id="attendanceStatus">Absent <i class="fas fa-circle-check"></i></p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Check-in Time</h3>
+                    <p id="checkInTime">--:-- <i class="fas fa-clock"></i></p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Date</h3>
+                    <p id="attendanceDate">--/--/---- <i class="fas fa-calendar"></i></p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Total Attendance</h3>
+                    <p id="totalAttendance">0</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Attendance %</h3>
+                    <p id="attendancePercent">0%</p>
+                </div>
+
+            </section>
+
+            <section class="quick-actions">
+                <h2>Quick Actions</h2>
+
+                <div class="action-grid">
+                    <div class="action-card" onclick="location.href='mark-attendance.html'">
+                        <i class="fas fa-camera"></i>
+                        Mark Attendance
+                    </div>
+
+                    <div class="action-card" onclick="location.href='history.html'">
+                        <i class="fas fa-file-lines"></i>
+                        Attendance History
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="dashboard.js"></script>
 </body>
+
 </html>

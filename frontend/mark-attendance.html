@@ -1,53 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mark Attendance</title>
-<link rel="stylesheet" href="mark-attendance.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Attendance</title>
+    <link rel="stylesheet" href="mark-attendance.css">
 </head>
 
 <body>
 
-<div class="attendance-wrapper">
+    <div class="attendance-wrapper">
 
-    <h2>Mark Attendance</h2>
+        <h2>Mark Attendance</h2>
 
-    <!-- STEP 1 LOCATION -->
-    <div class="card">
-        <h3>Step 1: Location Check</h3>
+        <div class="card">
+            <h3>Step 1: Location Check</h3>
 
-        <div class="location-box">
-            <div class="icon">📍</div>
+            <div class="location-box">
+                <div class="icon">📍</div>
 
-            <div>
-                <p id="locationStatus">Checking location...</p>
-                <small id="locationDetails"></small>
+                <div>
+                    <p id="locationStatus">Checking location...</p>
+                    <small id="locationDetails"></small>
+                </div>
+
+                <div id="locationTick">❌</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Step 2: Face Scan</h3>
+
+            <div class="camera-box">
+                <video id="video" autoplay muted></video>
+                <div class="face-frame"></div>
             </div>
 
-            <div id="locationTick">❌</div>
-        </div>
-    </div>
+            <p id="faceStatus">Status: Not Verified</p>
 
-    <!-- STEP 2 FACE -->
-    <div class="card">
-        <h3>Step 2: Face Scan</h3>
-
-        <div class="camera-box">
-            <video id="video" autoplay muted></video>
-            <div class="face-frame"></div>
+            <button id="scanBtn">Scan Face</button>
         </div>
 
-        <p id="faceStatus">Status: Not Verified</p>
+        <button id="confirmBtn" disabled>Confirm Attendance</button>
 
-        <button id="scanBtn">Scan Face</button>
     </div>
 
-    <!-- CONFIRM -->
-    <button id="confirmBtn" disabled>Confirm Attendance</button>
-
-</div>
-
-<script src="mark-attendance.js"></script>
+    <script src="mark-attendance.js"></script>
 </body>
+
 </html>

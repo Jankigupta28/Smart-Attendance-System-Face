@@ -5,7 +5,7 @@ body {
     padding: 0;
     width: 100%;
     min-height: 100vh;
-    
+
 }
 
 .dashboard-container {
@@ -14,7 +14,6 @@ body {
     min-height: 100vh;
 }
 
-/* SIDEBAR */
 .sidebar {
     width: 260px;
     background: linear-gradient(180deg, #111827, #312e81);
@@ -51,14 +50,12 @@ body {
     background: #6C63FF;
 }
 
-/* MAIN CONTENT */
 .main-content {
     flex: 1;
     padding: 30px;
     background: #f8f9fc;
 }
 
-/* HEADER */
 .top-header {
     display: flex;
     justify-content: space-between;
@@ -66,7 +63,6 @@ body {
     margin-bottom: 30px;
 }
 
-/* WELCOME BANNER */
 .welcome-banner {
     background: white;
     padding: 25px;
@@ -76,7 +72,6 @@ body {
     margin-bottom: 30px;
 }
 
-/* STATS GRID */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -84,7 +79,6 @@ body {
     margin-bottom: 30px;
 }
 
-/* STAT CARDS */
 .stat-card {
     background: white;
     padding: 25px;
@@ -105,7 +99,6 @@ body {
     color: #111827;
 }
 
-/* QUICK ACTIONS */
 .quick-actions h2 {
     margin-bottom: 15px;
 }
