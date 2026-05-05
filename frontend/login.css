@@ -1,0 +1,157 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #5B3DF5, #7B61FF);
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.card {
+    width: 420px;
+    background: #fff;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+.logo-box {
+    width: 75px;
+    height: 75px;
+    background: #F3F0FF;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+}
+
+.logo-box i {
+    font-size: 35px;
+    color: #5B3DF5;
+}
+
+.card h2 {
+    font-size: 28px;
+    color: #222;
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #777;
+    margin-bottom: 20px;
+}
+
+/* Tabs  */
+.login-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #eee;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    color: black;
+}
+
+.tab-btn.active {
+    background: linear-gradient(90deg, #5B3DF5, #7B61FF);
+    color: #fff;
+}
+
+/* Input Fields */
+.input-box {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 14px 10px 14px 45px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+    font-size: 15px;
+}
+
+.input-box input:focus {
+    border-color: #5B3DF5;
+}
+
+/* Left Icons */
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+/* Options */
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    margin-bottom: 18px;
+}
+
+.options a {
+    text-decoration: none;
+    color: #5B3DF5;
+}
+
+/* Button */
+.btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #5B3DF5, #7B61FF);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+/* Bottom Link */
+.link {
+    margin-top: 18px;
+    font-size: 14px;
+}
+
+.link a {
+    text-decoration: none;
+    color: #5B3DF5;
+    font-weight: 600;
+}

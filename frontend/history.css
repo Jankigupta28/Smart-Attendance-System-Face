@@ -1,0 +1,45 @@
+@import url("login.css");
+
+.history-container{
+    width:900px;
+    margin:40px auto;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.history-container h1{
+    margin-bottom:10px;
+}
+
+.history-container p{
+    color:gray;
+    margin-bottom:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th, td{
+    padding:15px;
+    text-align:center;
+    border-bottom:1px solid #eee;
+}
+
+th{
+    background:#6C63FF;
+    color:white;
+}
+
+.present{
+    color:green;
+    font-weight:bold;
+}
+
+.no-record{
+    color:gray;
+    font-style:italic;
+}

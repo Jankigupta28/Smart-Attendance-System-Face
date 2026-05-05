@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Enrollment</title>
+    <link rel="stylesheet" href="face-register.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="card">
+
+            <h2>Register Your Face</h2>
+            <p>Capture 5 face samples for best results</p>
+
+            <div class="face-preview-box">
+                <video id="video" autoplay playsinline muted></video>
+
+                <div class="face-frame top-left"></div>
+                <div class="face-frame top-right"></div>
+                <div class="face-frame bottom-left"></div>
+                <div class="face-frame bottom-right"></div>
+            </div>
+
+            <h4 class="sample-count">Samples Captured: <span id="sampleNumber">0</span> / 5</h4>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="btn-group">
+                <button class="secondary-btn" id="captureBtn">
+                    <i class='bx bx-camera'></i> Capture Sample
+                </button>
+
+                <button class="btn" id="saveFaceBtn">
+                    Save Face Data
+                </button>
+            </div>
+
+            <canvas id="canvas" style="display:none;"></canvas>
+
+        </div>
+    </div>
+
+    <script src="face-register.js"></script>
+</body>
+
+</html>>

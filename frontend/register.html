@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Attendance Register</title>
+    <link rel="stylesheet" href="register.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="card">
+
+            <div class="logo-box">
+                <i class='bx bx-user-plus'></i>
+            </div>
+
+            <h2>Create Account</h2>
+            <p>Fill the details to register</p>
+
+            <form id="registerForm">
+
+                <div class="input-box">
+                    <i class='bx bx-user input-icon'></i>
+                    <input type="text" placeholder="Full Name" required>
+                </div>
+
+                <div class="input-box">
+                    <i class='bx bx-id-card input-icon'></i>
+                    <input type="text" placeholder="Roll no / Employee ID" required>
+                </div>
+
+                <div class="input-box">
+                    <i class='bx bx-envelope input-icon'></i>
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+
+                <div class="input-box">
+                    <i class='bx bx-lock-alt input-icon'></i>
+                    <input type="password" id="regPassword" placeholder="Password" required>
+                </div>
+
+                <div class="input-box">
+                    <i class='bx bx-lock-alt input-icon'></i>
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                </div>
+
+                <button type="submit" class="btn">Register</button>
+
+            </form>
+
+            <p class="link">
+                Already have an account?
+                <a href="login.html">Login Here</a>
+            </p>
+
+        </div>
+    </div>
+
+
+    <script src="register.js"></script>
+</body>
+
+</html>
