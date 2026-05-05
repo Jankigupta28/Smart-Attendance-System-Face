@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="admin-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<div class="admin-layout">
+
+    <aside class="sidebar">
+        <h2>Admin Panel</h2>
+
+        <ul>
+            <li class="active"><i class="fas fa-chart-line"></i> Dashboard</li>
+            <li><i class="fas fa-users"></i> Students</li>
+            <li><i class="fas fa-calendar-check"></i> Attendance Records</li>
+            <li><i class="fas fa-file-export"></i> Export Reports</li>
+            <li onclick="logout()"><i class="fas fa-right-from-bracket"></i> Logout</li>
+        </ul>
+    </aside>
+
+    <main class="admin-content">
+
+        <div class="top-header">
+            <h1>Teacher Dashboard</h1>
+            <div class="admin-user">
+                <i class="fas fa-user-circle"></i>
+                <span>Admin</span>
+            </div>
+        </div>
+
+        <section class="summary-grid">
+            <div class="summary-card">
+                <h3>Total Students</h3>
+                <p id="totalStudents">120</p>
+            </div>
+
+            <div class="summary-card">
+                <h3>Present Today</h3>
+                <p id="presentToday">95</p>
+            </div>
+
+            <div class="summary-card">
+                <h3>Absent Today</h3>
+                <p id="absentToday">25</p>
+            </div>
+
+            <div class="summary-card">
+                <h3>Attendance Rate</h3>
+                <p id="attendanceRate">79%</p>
+            </div>
+        </section>
+
+        <section class="filter-bar">
+            <input type="text" id="searchStudent" placeholder="Search student...">
+            <input type="date" id="filterDate">
+            <select id="statusFilter">
+                <option value="all">All Status</option>
+                <option value="Present">Present</option>
+                <option value="Absent">Absent</option>
+            </select>
+            <button onclick="filterRecords()">Filter</button>
+        </section>
+
+        <section class="table-section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Roll No</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="adminTableBody"></tbody>
+            </table>
+        </section>
+
+    </main>
+</div>
+
+<script src="admin-dashboard.js"></script>
+</body>
+</html>

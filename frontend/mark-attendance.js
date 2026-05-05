@@ -5,10 +5,10 @@ const confirmBtn = document.getElementById("confirmBtn");
 let faceVerified = false;
 let locationVerified = false;
 
-navigator.mediaDevices.getUserMedia({video:true})
-.then(stream => {
-    video.srcObject = stream;
-});
+navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+        video.srcObject = stream;
+    });
 
 navigator.geolocation.getCurrentPosition(pos => {
 
@@ -23,7 +23,7 @@ navigator.geolocation.getCurrentPosition(pos => {
         (lon - collegeLon) ** 2
     );
 
-    if(distance < 0.01){
+    if (distance < 0.01) {
         locationVerified = true;
         document.getElementById("locationStatus").innerText =
             "Inside Campus ✅";
@@ -43,7 +43,7 @@ scanBtn.addEventListener("click", () => {
         document.getElementById("faceStatus").innerText =
             "Face Verified ✅";
 
-        if(faceVerified && locationVerified){
+        if (faceVerified && locationVerified) {
             confirmBtn.disabled = false;
         }
 
@@ -56,20 +56,32 @@ confirmBtn.addEventListener("click", () => {
 
     const date = now.toLocaleDateString();
     const time = now.toLocaleTimeString([], {
-        hour:'2-digit',
-        minute:'2-digit'
+        hour: '2-digit',
+        minute: '2-digit'
     });
+
+    const currentUser = JSON.parse(localStorage.getItem("currentUser")) || {
+        fullName: "Unknown",
+        rollNo: "N/A"
+    };
 
     let history = JSON.parse(localStorage.getItem("attendanceHistory")) || [];
 
-    const alreadyMarked = history.some(r => r.date === date);
-
-    if(alreadyMarked){
+     const alreadyMarked = history.some( r => r.date === date && r.roll === currentUser.rollNo);
+    if (alreadyMarked) {
         alert("Already Marked Today");
         return;
     }
 
-    history.push({date,time,status:"Present"});
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    history.push({
+        name: currentUser.fullName,
+        roll: currentUser.rollNo,
+        date: date,
+        time: time,
+        status: "Present"
+    });
 
     localStorage.setItem("attendanceHistory", JSON.stringify(history));
     localStorage.setItem("attendanceStatus", "Present");
