@@ -15,6 +15,18 @@ if (registerForm) {
             return;
         }
 
+        let users =
+            JSON.parse(localStorage.getItem("registeredUsers")) || [];
+
+        const alreadyExists = users.some(user =>
+            user.email === email || user.rollNo === rollNo
+        );
+
+        if (alreadyExists) {
+            alert("User already registered!");
+            return;
+        }
+
         const userData = {
             fullName,
             rollNo,
@@ -22,9 +34,17 @@ if (registerForm) {
             password
         };
 
-        localStorage.setItem("registeredUser", JSON.stringify(userData));
+        users.push(userData);
 
-        localStorage.setItem("currentUser", JSON.stringify(userData));
+        localStorage.setItem(
+            "registeredUsers",
+            JSON.stringify(users)
+        );
+
+        localStorage.setItem(
+            "currentUser",
+            JSON.stringify(userData)
+        );
 
         alert("Registration Successful ✅");
 

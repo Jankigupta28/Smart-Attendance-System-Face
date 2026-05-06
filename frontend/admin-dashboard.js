@@ -1,16 +1,31 @@
 const adminTableBody = document.getElementById("adminTableBody");
 
-let attendanceData =
+const allAttendance =
     JSON.parse(localStorage.getItem("attendanceHistory")) || [];
 
-function renderTable(data){
+const registeredUsers =
+    JSON.parse(localStorage.getItem("registeredUsers")) || [];
+
+const today = new Date().toLocaleDateString();
+
+
+
+/* ===== FILTER ONLY TODAY'S ATTENDANCE ===== */
+const todayAttendance = allAttendance.filter(record =>
+    record.date === today
+);
+
+
+
+/* ===== RENDER TABLE ===== */
+function renderTable(data) {
 
     adminTableBody.innerHTML = "";
 
-    if(data.length === 0){
+    if (data.length === 0) {
         adminTableBody.innerHTML = `
             <tr>
-                <td colspan="5">No Attendance Records Found</td>
+                <td colspan="5">No Attendance Marked Today</td>
             </tr>
         `;
         return;
@@ -32,9 +47,34 @@ function renderTable(data){
     });
 }
 
-renderTable(attendanceData);
+renderTable(todayAttendance);
 
-function filterRecords(){
+
+
+/* ===== SUMMARY CARDS ===== */
+document.getElementById("totalStudents").innerText =
+    registeredUsers.length;
+
+document.getElementById("presentToday").innerText =
+    todayAttendance.length;
+
+document.getElementById("absentToday").innerText =
+    registeredUsers.length - todayAttendance.length;
+
+
+
+const rate =
+    registeredUsers.length > 0
+        ? ((todayAttendance.length / registeredUsers.length) * 100).toFixed(1)
+        : 0;
+
+document.getElementById("attendanceRate").innerText =
+    rate + "%";
+
+
+
+/* ===== FILTER FUNCTION ===== */
+function filterRecords() {
 
     const search =
         document.getElementById("searchStudent").value.toLowerCase();
@@ -42,7 +82,7 @@ function filterRecords(){
     const status =
         document.getElementById("statusFilter").value;
 
-    let filtered = attendanceData.filter(student => {
+    const filtered = todayAttendance.filter(student => {
 
         const matchName =
             student.name.toLowerCase().includes(search);
@@ -56,6 +96,10 @@ function filterRecords(){
     renderTable(filtered);
 }
 
-function logout(){
+
+
+/* ===== LOGOUT ===== */
+function logout() {
+    localStorage.removeItem("currentUser");
     window.location.href = "login.html";
 }
