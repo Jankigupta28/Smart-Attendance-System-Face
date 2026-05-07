@@ -1,3 +1,22 @@
+let registerType = "user";
+/* SWITCH USER / ADMIN */
+function switchLogin(type) {
+
+    registerType = type;
+
+    const buttons = document.querySelectorAll(".tab-btn");
+
+    buttons.forEach(btn =>
+        btn.classList.remove("active")
+    );
+
+    if (type === "user") {
+        buttons[0].classList.add("active");
+    }
+    else {
+        buttons[1].classList.add("active");
+    }
+}
 const registerForm = document.getElementById("registerForm");
 
 if (registerForm) {
@@ -24,14 +43,16 @@ if (registerForm) {
 
         if (alreadyExists) {
             alert("User already registered!");
-            return;
+          
+        return;
         }
 
         const userData = {
             fullName,
             rollNo,
             email,
-            password
+            password,
+            role: registerType
         };
 
         users.push(userData);
@@ -48,6 +69,11 @@ if (registerForm) {
 
         alert("Registration Successful ✅");
 
-        window.location.href = "login.html";
+        if (registerType === "user") {
+            window.location.href = "face-register.html";
+        }
+        else {
+            window.location.href = "login.html";
+        }
     });
 }

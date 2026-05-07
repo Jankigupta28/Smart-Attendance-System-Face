@@ -1,11 +1,22 @@
 const historyTableBody = document.getElementById("historyTableBody");
 
-if(historyTableBody){
+if (historyTableBody) {
 
-    const history = JSON.parse(localStorage.getItem("attendanceHistory")) || [];
+    // const history = JSON.parse(localStorage.getItem("attendanceHistory")) || [];
+    const currentUser =
+        JSON.parse(localStorage.getItem("currentUser"));
 
-    if(history.length === 0){
+    /* ALL ATTENDANCE */
+    const allHistory =
+        JSON.parse(localStorage.getItem("attendanceHistory")) || [];
 
+    /* ONLY CURRENT USER HISTORY */
+    const userHistory = allHistory.filter(record =>
+        record.roll === currentUser.rollNo
+    );
+
+    /* NO RECORD */
+    if (history.length === 0) {
         historyTableBody.innerHTML = `
             <tr>
                 <td colspan="3" class="no-record">
@@ -13,9 +24,7 @@ if(historyTableBody){
                 </td>
             </tr>
         `;
-
     } else {
-
         history.slice().reverse().forEach(record => {
             historyTableBody.innerHTML += `
                 <tr>
@@ -25,6 +34,5 @@ if(historyTableBody){
                 </tr>
             `;
         });
-
     }
 }

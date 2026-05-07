@@ -2,12 +2,12 @@
 
 .input-box{
     position:relative;
-    margin-bottom:18px;
+    margin-bottom: 14px;
 }
 
 .input-box input{
     width:100%;
-    padding:14px 10px 14px 45px;
+    padding:12px 10px 12px 42px;
     border:1px solid #ddd;
     border-radius:10px;
 }
@@ -17,4 +17,9 @@
     left:15px;
     top:50%;
     transform:translateY(-50%);
+}
+
+.card{
+    width:400px;
+    padding:25px;
 }

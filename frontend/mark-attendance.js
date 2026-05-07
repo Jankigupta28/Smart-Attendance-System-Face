@@ -5,16 +5,22 @@ const confirmBtn = document.getElementById("confirmBtn");
 let faceVerified = false;
 let locationVerified = false;
 
+/* START CAMERA */
 navigator.mediaDevices.getUserMedia({ video: true })
     .then(stream => {
         video.srcObject = stream;
+    })
+    .catch(() => {
+        alert("Camera Access Denied");
     });
 
+/* LOCATION CHECK */
 navigator.geolocation.getCurrentPosition(pos => {
 
     const lat = pos.coords.latitude;
     const lon = pos.coords.longitude;
 
+    /* Dummy College Location */
     const collegeLat = 25.28;
     const collegeLon = 82.98;
 
@@ -28,38 +34,38 @@ navigator.geolocation.getCurrentPosition(pos => {
         document.getElementById("locationStatus").innerText =
             "Inside Campus ✅";
     }
-
+    else {
+        document.getElementById("locationStatus").innerText =
+            "Outside Campus ❌";
+    }
 });
 
+/* FACE SCAN */
 scanBtn.addEventListener("click", () => {
-
     document.getElementById("faceStatus").innerText =
-        "Scanning...";
-
+        "Scanning Face...";
     setTimeout(() => {
-
         faceVerified = true;
-
         document.getElementById("faceStatus").innerText =
             "Face Verified ✅";
 
+        /* ENABLE BUTTON */
         if (faceVerified && locationVerified) {
             confirmBtn.disabled = false;
         }
-
     }, 2000);
 });
 
+/* MARK ATTENDANCE */
 confirmBtn.addEventListener("click", () => {
-
     const now = new Date();
-
     const date = now.toLocaleDateString();
     const time = now.toLocaleTimeString([], {
         hour: '2-digit',
         minute: '2-digit'
     });
 
+    /* CURRENT USER */
     const currentUser = JSON.parse(localStorage.getItem("currentUser")) || {
         fullName: "Unknown",
         rollNo: "N/A"
@@ -67,14 +73,17 @@ confirmBtn.addEventListener("click", () => {
 
     let history = JSON.parse(localStorage.getItem("attendanceHistory")) || [];
 
-     const alreadyMarked = history.some( r => r.date === date && r.roll === currentUser.rollNo);
+    /* ONE ATTENDANCE PER DAY */
+    const alreadyMarked = history.some(record =>
+        record.date === date &&
+        record.roll === currentUser.rollNo
+    );
     if (alreadyMarked) {
-        alert("Already Marked Today");
+        alert("Attendance Already Marked Today ❌");
         return;
     }
 
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
+    /* SAVE ATTENDANCE */
     history.push({
         name: currentUser.fullName,
         roll: currentUser.rollNo,
@@ -88,6 +97,7 @@ confirmBtn.addEventListener("click", () => {
     localStorage.setItem("checkInTime", time);
     localStorage.setItem("attendanceDate", date);
 
-    alert("Attendance Marked");
+    alert("Attendance Marked Successfully ✅");
+
     window.location.href = "dashboard.html";
 });
