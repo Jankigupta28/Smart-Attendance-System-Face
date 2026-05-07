@@ -42,12 +42,17 @@ if (loginForm) {
             alert("Invalid Credentials or Wrong Role!");
             return;
         }
+        /* FACE CHECK */
+        if (!validUser.faceRegistered && validUser.role === "user") {
+            alert("Please complete face registration first!");
+            return;
+        }
         /* SAVE CURRENT USER */
         localStorage.setItem(
             "currentUser",
             JSON.stringify(validUser)
         );
-        
+
         /* ROLE BASED LOGIN */
         if (validUser.role === "admin") {
             alert("Admin Login Successful ✅")

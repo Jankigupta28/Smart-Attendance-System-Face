@@ -19,13 +19,16 @@ captureBtn.addEventListener("click", () => {
 
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
+
     const ctx = canvas.getContext("2d");
     ctx.drawImage(video, 0, 0);
-    const imageData = canvas.toDataURL("image/png");
+
+    const imageData = canvas.toDataURL("image/jpeg", 0.3);
     faceSamples.push(imageData);
     sampleCount++;
     sampleNumber.innerText = sampleCount;
     progressFill.style.width = `${sampleCount * 20}%`;
+
     if (sampleCount === 5) {
         captureBtn.disabled = true;
         captureBtn.innerText = "Completed ✅";
@@ -39,6 +42,7 @@ saveFaceBtn.addEventListener("click", () => {
     }
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     let users = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+    
     users = users.map(user => {
         if (user.email === currentUser.email) {
             return {
@@ -52,6 +56,14 @@ saveFaceBtn.addEventListener("click", () => {
     localStorage.setItem(
         "registeredUsers",
         JSON.stringify(users)
+    );
+    const updatedUser = users.find(
+        user => user.email === currentUser.email
+    );
+
+    localStorage.setItem(
+        "currentUser",
+        JSON.stringify(updatedUser)
     );
 
     alert("Face Registered Successfully");
