@@ -1,4 +1,4 @@
-const historyTableBody = document.getElementById("historyTableBody");
+ const historyTableBody = document.getElementById("historyTableBody");
 
 if (historyTableBody) {
 
@@ -25,7 +25,7 @@ if (historyTableBody) {
             </tr>
         `;
     } else {
-        history.slice().reverse().forEach(record => {
+        userHistory.slice().reverse().forEach(record => {
             historyTableBody.innerHTML += `
                 <tr>
                     <td>${record.date}</td>

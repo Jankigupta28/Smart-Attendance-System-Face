@@ -42,8 +42,7 @@ if (registerForm) {
         );
 
         if (alreadyExists) {
-            alert("User already registered!");
-          
+            alert("User already registered!"); 
         return;
         }
 
@@ -57,15 +56,8 @@ if (registerForm) {
 
         users.push(userData);
 
-        localStorage.setItem(
-            "registeredUsers",
-            JSON.stringify(users)
-        );
-
-        localStorage.setItem(
-            "currentUser",
-            JSON.stringify(userData)
-        );
+        localStorage.setItem("registeredUsers",JSON.stringify(users));
+        localStorage.setItem( "currentUser",JSON.stringify(userData));
 
         alert("Registration Successful ✅");
 

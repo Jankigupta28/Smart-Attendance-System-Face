@@ -23,8 +23,8 @@ captureBtn.addEventListener("click", () => {
     const ctx = canvas.getContext("2d");
     ctx.drawImage(video, 0, 0);
 
-    const imageData = canvas.toDataURL("image/jpeg", 0.3);
-    faceSamples.push(imageData);
+    faceSamples.push(canvas.toDataURL("image/jpeg", 0.3));
+  
     sampleCount++;
     sampleNumber.innerText = sampleCount;
     progressFill.style.width = `${sampleCount * 20}%`;
@@ -53,20 +53,11 @@ saveFaceBtn.addEventListener("click", () => {
         }
         return user;
     });
-    localStorage.setItem(
-        "registeredUsers",
-        JSON.stringify(users)
-    );
-    const updatedUser = users.find(
-        user => user.email === currentUser.email
-    );
+    localStorage.setItem( "registeredUsers",JSON.stringify(users));
+    const updatedUser = users.find(user => user.email === currentUser.email);
 
-    localStorage.setItem(
-        "currentUser",
-        JSON.stringify(updatedUser)
-    );
+    localStorage.setItem("currentUser",JSON.stringify(updatedUser));
 
     alert("Face Registered Successfully");
-
     window.location.href = "login.html";
 });
