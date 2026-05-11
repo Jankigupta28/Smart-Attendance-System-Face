@@ -130,3 +130,63 @@ th {
     color: red;
     font-weight: 600;
 }
+.session-section {
+    background: white;
+    padding: 20px 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+    margin-bottom: 25px;
+}
+
+.session-section h2 {
+    margin-bottom: 15px;
+    color: #111827;
+    font-size: 18px;
+}
+
+.session-controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.session-controls select {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    flex: 1;
+}
+
+.start-btn {
+    padding: 12px 25px;
+    background: #22c55e;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.start-btn:hover {
+    background: #16a34a;
+}
+
+.end-btn {
+    padding: 12px 25px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.end-btn:hover {
+    background: #dc2626;
+}
+
+#sessionStatus {
+    margin-top: 12px;
+    font-weight: 600;
+    color: #6C63FF;
+}

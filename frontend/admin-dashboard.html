@@ -31,7 +31,8 @@
                 <h1>Teacher Dashboard</h1>
                 <div class="admin-user">
                     <i class="fas fa-user-circle"></i>
-                    <span>Admin</span>
+                   <!-- ✅ Naya -->
+<span id="teacherName">Teacher</span>
                 </div>
             </div>
 
@@ -56,6 +57,23 @@
                     <p id="attendanceRate">79%</p>
                 </div>
             </section>
+
+<section class="session-section">
+    <h2>Class Session</h2>
+    <div class="session-controls">
+        <select id="courseSelect">
+            <option value="1">Mathematics</option>
+        </select>
+      
+        <button onclick="startSession()" class="start-btn">
+            <i class="fas fa-play"></i> Start Session
+        </button>
+        <button onclick="endSession()" class="end-btn">
+            <i class="fas fa-stop"></i> End Session
+        </button>
+    </div>
+    <p id="sessionStatus">No Active Session</p>
+</section>
 
             <section class="filter-bar">
                 <input type="text" id="searchStudent" placeholder="Search student...">

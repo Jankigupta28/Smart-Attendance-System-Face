@@ -23,44 +23,35 @@ if (loginForm) {
 
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
-
-        /* EMPTY CHECK */
-        if (email === "" || password === "") {
-            alert("Please fill all fields!");
-            return;
-        }
-
-        let users = JSON.parse(localStorage.getItem("registeredUsers")) || [];
-        /* FIND USER */
-        const validUser = users.find(user =>
-            user.email === email &&
-            user.password === password &&
-            user.role === loginType
-        );
-        /* INVALID */
-        if (!validUser) {
-            alert("Invalid Credentials or Wrong Role!");
-            return;
-        }
-        /* FACE CHECK */
-        if (!validUser.faceRegistered && validUser.role === "user") {
-            alert("Please complete face registration first!");
-            return;
-        }
-        /* SAVE CURRENT USER */
-        localStorage.setItem(
-            "currentUser",
-            JSON.stringify(validUser)
-        );
-
-        /* ROLE BASED LOGIN */
-        if (validUser.role === "admin") {
-            alert("Admin Login Successful ✅")
+  fetch("http://localhost:8080/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: email, password: password })
+})
+.then(res => {
+    if (!res.ok) {
+        return res.text().then(text => { throw new Error(text) });
+    }
+    return res.json();
+})
+.then(data => {
+    if (data.status === "Login success") {
+        // Use 'userId' consistently
+      
+        localStorage.setItem("userId", data.userId);
+        console.log("Saved userId:", localStorage.getItem("userId"));
+        if (data.role === "TEACHER") {
             window.location.href = "admin-dashboard.html";
-        }
-        else {
-            alert("Student Login Successful ✅");
+        } else {
             window.location.href = "dashboard.html";
         }
+    } else {
+        alert("Login failed: " + (data.message || "Invalid credentials"));
+    }
+})
+.catch(err => {
+    console.error("Login Error:", err);
+    alert("Login error: " + err.message);
+});
     });
 }

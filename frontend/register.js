@@ -34,38 +34,46 @@ if (registerForm) {
             return;
         }
 
-        let users =
-            JSON.parse(localStorage.getItem("registeredUsers")) || [];
-
-        const alreadyExists = users.some(user =>
-            user.email === email || user.rollNo === rollNo
-        );
-
-        if (alreadyExists) {
-            alert("User already registered!"); 
-        return;
-        }
-
-        const userData = {
-            fullName,
-            rollNo,
-            email,
-            password,
-            role: registerType
-        };
-
-        users.push(userData);
-
-        localStorage.setItem("registeredUsers",JSON.stringify(users));
-        localStorage.setItem( "currentUser",JSON.stringify(userData));
-
-        alert("Registration Successful ✅");
-
-        if (registerType === "user") {
-            window.location.href = "face-register.html";
-        }
-        else {
-            window.location.href = "login.html";
+              if (registerType === "user") {
+            fetch("http://localhost:8080/students", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    enrollmentNumber: rollNo,
+                    name: fullName,
+                    email: email,
+                    password: password,
+                    department: "CS",
+                    semester: 1
+                })
+            })
+         .then(res => res.text())
+.then(() => {
+    localStorage.setItem("userId", rollNo); // ✅ yeh add karo
+    alert("Registration Successful ✅");
+    window.location.href = "face-register.html";
+});
+        } else {
+            fetch("http://localhost:8080/teacher", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    teacherId: rollNo,
+                    name: fullName,
+                    email: email,
+                    password: password,
+                    department: "CS"
+                })
+            })
+           .then(res => res.text())
+.then(() => {
+    localStorage.setItem("userId", rollNo); // ✅ add karo
+    alert("Registration Successful ✅");
+    window.location.href = "login.html";
+});
         }
     });
-}
+}   
+        
+
+   

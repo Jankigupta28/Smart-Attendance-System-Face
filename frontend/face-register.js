@@ -40,24 +40,19 @@ saveFaceBtn.addEventListener("click", () => {
         alert("Capture 5 Samples First");
         return;
     }
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    let users = JSON.parse(localStorage.getItem("registeredUsers")) || [];
-    
-    users = users.map(user => {
-        if (user.email === currentUser.email) {
-            return {
-                ...user,
-                faceRegistered: true,
-                faceSamples: faceSamples
-            };
-        }
-        return user;
-    });
-    localStorage.setItem( "registeredUsers",JSON.stringify(users));
-    const updatedUser = users.find(user => user.email === currentUser.email);
+    const enrollmentNumber = localStorage.getItem("userId");
 
-    localStorage.setItem("currentUser",JSON.stringify(updatedUser));
-
+fetch("http://localhost:8080/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+        enrollmentNumber: enrollmentNumber,
+        imagePath: faceSamples[0]
+    })
+})
+.then(res => res.text())
+.then(data => {
     alert("Face Registered Successfully");
     window.location.href = "login.html";
+});
 });

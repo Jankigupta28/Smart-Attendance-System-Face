@@ -1,38 +1,37 @@
- const historyTableBody = document.getElementById("historyTableBody");
+const historyTableBody = document.getElementById("historyTableBody");
 
 if (historyTableBody) {
+    const enrollmentNumber = localStorage.getItem("userId");
 
-    // const history = JSON.parse(localStorage.getItem("attendanceHistory")) || [];
-    const currentUser =
-        JSON.parse(localStorage.getItem("currentUser"));
-
-    /* ALL ATTENDANCE */
-    const allHistory =
-        JSON.parse(localStorage.getItem("attendanceHistory")) || [];
-
-    /* ONLY CURRENT USER HISTORY */
-    const userHistory = allHistory.filter(record =>
-        record.roll === currentUser.rollNo
-    );
-
-    /* NO RECORD */
-    if (history.length === 0) {
-        historyTableBody.innerHTML = `
-            <tr>
-                <td colspan="3" class="no-record">
-                    No Attendance Records Found
-                </td>
-            </tr>
-        `;
-    } else {
-        userHistory.slice().reverse().forEach(record => {
-            historyTableBody.innerHTML += `
-                <tr>
-                    <td>${record.date}</td>
-                    <td>${record.time}</td>
-                    <td class="present">${record.status}</td>
-                </tr>
-            `;
-        });
+    if (!enrollmentNumber) {
+        window.location.href = "login.html";
     }
+
+    fetch(`http://localhost:8080/attendance/student/${enrollmentNumber}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.length === 0) {
+                historyTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="3" class="no-record">
+                            No Attendance Records Found
+                        </td>
+                    </tr>
+                `;
+            } else {
+                data.slice().reverse().forEach(record => {
+                    const date = new Date(record.timeStamp);
+                    historyTableBody.innerHTML += `
+                        <tr>
+                            <td>${date.toLocaleDateString()}</td>
+                            <td>${date.toLocaleTimeString()}</td>
+                            <td class="present">Present ✅</td>
+                        </tr>
+                    `;
+                });
+            }
+        })
+        .catch(err => {
+            console.error("History Error:", err);
+        });
 }
