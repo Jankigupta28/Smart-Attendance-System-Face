@@ -21,11 +21,15 @@ public class TeacherService {
         return teacherRepo.findByTeacherId(teacherId);
     }
 
-    public void addTeacher(Teacher teacher) {
-       teacherRepo.save(teacher);
+    public Teacher addTeacher(Teacher teacher) {
+       return teacherRepo.save(teacher);
     }
 
     public void deleteTeacher(String teacherId) {
         teacherRepo.deleteByTeacherId(teacherId);
+    }
+
+    public Teacher updateTeacher(Teacher teacher) {
+        return teacherRepo.save(teacher);
     }
 }

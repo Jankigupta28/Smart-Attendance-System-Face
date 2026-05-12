@@ -5,6 +5,7 @@ import org.attend.attend_ai.attendService.TeacherService;
 import org.attend.attend_ai.model.EndUser;
 import org.attend.attend_ai.model.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,50 +22,41 @@ public class TeacherController {
     @Autowired
     private UserRepo userRepo;
 
-    @GetMapping("/teachers")
+    @GetMapping
     public ResponseEntity<?> getAllTeachers(){
         List<Teacher> teachers = teacherService.getAllTeachers();
         return ResponseEntity.ok(teachers);
     }
 
-    @GetMapping("/teacher/{teacherId}")
+    @GetMapping("/{teacherId}")
     public ResponseEntity<Optional<Teacher>> getTeacher(@PathVariable String teacherId){
         Optional<Teacher> teacher = teacherService.getTeacher(teacherId);
       return ResponseEntity.ok(teacher);
     }
 
-    @PutMapping("/teacher/{teacherId}")
-    public String updateTeacher(@RequestBody Teacher teacher, @PathVariable String teacherId) {
+    @PutMapping("/{teacherId}")
+    public ResponseEntity<Teacher> updateTeacher(@RequestBody Teacher teacher, @PathVariable String teacherId) {
         teacher.setTeacherId(teacherId);
-        teacherService.addTeacher(teacher);
-
-
-        if (userRepo.findByEmail(String.valueOf(teacherId)) == null) {
-            EndUser user = new EndUser();
-            user.setEmail(teacher.getEmail());
-            user.setPassword(teacher.getPassword());
-            user.setUserRefId(teacher.getTeacherId());
-            user.setRole("TEACHER");
-            userRepo.save(user);
-        }
-
-        return "Successfully added";
+        Teacher update =    teacherService.updateTeacher(teacher);
+        return new ResponseEntity<>(update,HttpStatus.OK);
     }
 
-    @PostMapping("/teacher")
-    public String addTeacher(@RequestBody Teacher teacher) {
-        teacherService.addTeacher(teacher);
+    @PostMapping
+    public ResponseEntity<Teacher> addTeacher(@RequestBody Teacher teacher) {
+
+      Teacher saved =   teacherService.addTeacher(teacher);
 
         EndUser user = new EndUser();
         user.setEmail(teacher.getEmail());
         user.setPassword(teacher.getPassword());
+        user.setUserRefId(teacher.getTeacherId());
         user.setRole("TEACHER");
         userRepo.save(user);
 
-        return "Successfully added";
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/teacher/{teacherId}")
+    @DeleteMapping("/{teacherId}")
     public String deleteTeacher(@PathVariable String teacherId){
        teacherService.deleteTeacher(teacherId);
 

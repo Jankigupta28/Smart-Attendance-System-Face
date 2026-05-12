@@ -1,86 +1,45 @@
 from flask import Flask, request, jsonify
-import cv2
-import numpy as np
-import os
-import hashlib
-import base64
-import tempfile
-import json
+from flask_cors import CORS
+import face_recognition
+import os, json, base64
 
 app = Flask(__name__)
+CORS(app)
 
-STUDENTS_FILE = "students.json"
-
-# Load existing students
-if os.path.exists(STUDENTS_FILE):
-    with open(STUDENTS_FILE, "r") as f:
-        students = json.load(f)
-else:
-    students = {}
-
-def get_face_hash(image_path):
-    img = cv2.imread(image_path)
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-
-    if len(faces) == 0:
-        return None
-
-    x, y, w, h = faces[0]
-    face = gray[y:y+h, x:x+w]
-    face_resized = cv2.resize(face, (100, 100))
-    face_hash = hashlib.md5(face_resized.tobytes()).hexdigest()
-    return face_hash
+DB_FILE = "students_faces.json"
 
 @app.route('/register', methods=['POST'])
 def register():
-    data = request.json
-    enrollment_number = data['enrollmentNumber']
-    img_base64 = data['imagePath']
+    try:
+        data = request.json
+        enrollment = data.get('enrollmentNumber')
+        img_b64 = data.get('imagePath').split(",")[-1]
 
-    if ',' in img_base64:
-        img_base64 = img_base64.split(',')[1]
+        # Image ko temporary save karo check karne ke liye
+        with open("temp.jpg", "wb") as f:
+            f.write(base64.b64decode(img_b64))
 
-    img_data = base64.b64decode(img_base64)
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as temp:
-        temp.write(img_data)
-        img_path = temp.name
+        image = face_recognition.load_image_file("temp.jpg")
+        encodings = face_recognition.face_encodings(image)
 
-    face_hash = get_face_hash(img_path)
-    if face_hash is None:
-        return jsonify({'error': 'No face found'}), 400
+        if not encodings:
+            return jsonify({"status": "fail", "message": "Face not detected"}), 400
 
-    students[enrollment_number] = face_hash
+        # Database (JSON file) load karo
+        db = {}
+        if os.path.exists(DB_FILE):
+            with open(DB_FILE, "r") as f:
+                db = json.load(f)
 
-    # File mein save karo
-    with open(STUDENTS_FILE, "w") as f:
-        json.dump(students, f)
+        # Enrollment number ke against face data save karo
+        db[enrollment] = encodings[0].tolist()
+        with open(DB_FILE, "w") as f:
+            json.dump(db, f)
 
-    return jsonify({'status': 'success', 'enrollmentNumber': enrollment_number})
-
-@app.route('/recognize', methods=['POST'])
-def recognize():
-    data = request.json
-    img_base64 = data['imagePath']
-
-    if ',' in img_base64:
-        img_base64 = img_base64.split(',')[1]
-
-    img_data = base64.b64decode(img_base64)
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as temp:
-        temp.write(img_data)
-        img_path = temp.name
-
-    face_hash = get_face_hash(img_path)
-    if face_hash is None:
-        return jsonify({'enrollmentNumber': None, 'error': 'No face'}), 400
-
-    for enrollment_number, known_hash in students.items():
-        if face_hash == known_hash:
-            return jsonify({'enrollmentNumber': enrollment_number})
-
-    return jsonify({'enrollmentNumber': None})
+        return jsonify({"status": "success"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(port=5000)
+
+    app.run(port=5000, debug=True)

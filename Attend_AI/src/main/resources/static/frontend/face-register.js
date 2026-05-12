@@ -42,12 +42,13 @@ saveFaceBtn.addEventListener("click", () => {
     }
     const enrollmentNumber = localStorage.getItem("userId");
 
+
 fetch("http://localhost:8080/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
         enrollmentNumber: enrollmentNumber,
-        imagePath: faceSamples[0]
+        imagePath: faceSamples[0].split(',')[1]
     })
 })
 .then(res => res.text())

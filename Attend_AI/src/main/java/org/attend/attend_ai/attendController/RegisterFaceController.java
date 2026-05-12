@@ -23,22 +23,22 @@ public class RegisterFaceController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody FaceRegisterRequest request) {
-
-
         String url = "http://localhost:5000/register";
-        String result = restTemplate.postForObject(url, request, String.class);
+        try {
+            String result = restTemplate.postForObject(url, request, String.class);
 
-        if (result != null && result.contains("success")) {
-            Optional<Student> student = registerService.findStudent(request.getEnrollmentNumber());
-            if (student.isPresent()) {
-                Student s = student.get();
-                s.setFaceEncoding("REGISTERED");
-                registerService.addStudent(s);
+            if (result != null && result.contains("success")) {
+                Optional<Student> student = registerService.findStudent(request.getEnrollmentNumber());
+                student.ifPresent(s -> {
+                    s.setFaceEncoding("REGISTERED");
+                    registerService.addStudent(s);
+                });
+                return ResponseEntity.ok("Face registered");
             }
-            return ResponseEntity.ok("Face registered");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("AI Server Error: " + e.getMessage());
         }
         return ResponseEntity.badRequest().body("Failed");
     }
-
 
 }
