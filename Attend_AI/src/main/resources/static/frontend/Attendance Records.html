@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Records</title>
+
+    <link rel="stylesheet" href="Attendance Records.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <h2>Admin Panel</h2>
+
+            <ul>
+
+                <li onclick="location.href='admin-dashboard.html'">
+                    <i class="fas fa-chart-line"></i>
+                    Dashboard
+                </li>
+
+                <li onclick="location.href='students.html'">
+                    <i class="fas fa-users"></i>
+                    Students
+                </li>
+
+                <li class="active">
+                    <i class="fas fa-calendar-check"></i>
+                    Attendance Records
+                </li>
+
+                <li>
+                    <i class="fas fa-file-export"></i>
+                    Export Reports
+                </li>
+
+                <li onclick="logout()">
+                    <i class="fas fa-right-from-bracket"></i>
+                    Logout
+                </li>
+
+            </ul>
+
+        </aside>
+
+
+
+        <!-- MAIN CONTENT -->
+        <main class="admin-content">
+
+            <!-- TOP HEADER -->
+            <div class="top-header">
+
+                <div>
+                    <h1>Attendance Records</h1>
+                    <p>Track all student attendance records</p>
+                </div>
+
+                <div class="admin-user">
+
+                    <i class="fas fa-user-circle"></i>
+
+                    <span id="teacherName">
+                        Teacher
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SUMMARY -->
+            <section class="summary-grid">
+
+                <div class="summary-card">
+                    <h3>Total Records</h3>
+                    <p id="totalRecords">0</p>
+                </div>
+
+                <div class="summary-card">
+                    <h3>Present</h3>
+                    <p id="presentCount">0</p>
+                </div>
+
+                <div class="summary-card">
+                    <h3>Absent</h3>
+                    <p id="absentCount">0</p>
+                </div>
+
+                <div class="summary-card">
+                    <h3>Attendance %</h3>
+                    <p id="attendancePercent">0%</p>
+                </div>
+
+            </section>
+
+
+
+            <!-- FILTER BAR -->
+            <section class="filter-bar">
+
+                <input
+                    type="text"
+                    id="searchStudent"
+                    placeholder="Search Student..."
+                >
+
+                <input
+                    type="date"
+                    id="filterDate"
+                >
+
+                <select id="statusFilter">
+
+                    <option value="all">All Status</option>
+
+                    <option value="Present">Present</option>
+
+                    <option value="Absent">Absent</option>
+
+                </select>
+
+                <button onclick="filterRecords()">
+                    Filter
+                </button>
+
+            </section>
+
+
+
+            <!-- TABLE -->
+            <section class="table-section">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Name</th>
+
+                            <th>Roll No</th>
+
+                            <th>Date</th>
+
+                            <th>Time</th>
+
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+
+
+                    <tbody id="adminTableBody">
+
+                    </tbody>
+
+                </table>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="Attendance Records.js"></script>
+
+</body>
+
+</html>

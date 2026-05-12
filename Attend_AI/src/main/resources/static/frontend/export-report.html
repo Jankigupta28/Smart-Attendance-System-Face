@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export Reports</title>
+
+    <link rel="stylesheet" href="export-report.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <div class="export-container">
+        <div class="export-card">
+            <div class="icon-box">
+                <i class="fas fa-file-export"></i>
+            </div>
+            <h1>Export Attendance Reports</h1>
+            <p>
+                Download attendance records by date
+            </p>
+
+            <!-- DATE FILTER -->
+            <div class="date-filter">
+                <label>Select Date</label>
+                <input type="date" id="reportDate">
+            </div>
+
+            <!-- SUMMARY -->
+            <div class="report-summary">
+                <div class="summary-box">
+                    <h3>Total</h3>
+                    <p id="totalRecords">0</p>
+                </div>
+                <div class="summary-box">
+                    <h3>Present</h3>
+                    <p id="presentCount">0</p>
+                </div>
+                <div class="summary-box">
+                    <h3>Absent</h3>
+                    <p id="absentCount">0</p>
+                </div>
+            </div>
+
+            <!-- PREVIEW TABLE -->
+            <div class="preview-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Roll No</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="previewBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- BUTTONS -->
+            <button onclick="filterByDate()" class="filter-btn">
+                <i class="fas fa-filter"></i>
+                Load Records
+            </button>
+            <button onclick="exportCSV()" class="export-btn">
+                <i class="fas fa-download"></i>
+                Export CSV Report
+            </button>
+            <button onclick="goBack()" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back
+            </button>
+        </div>
+    </div>
+    <script src="export-report.js"></script>
+</body>
+
+</html>
