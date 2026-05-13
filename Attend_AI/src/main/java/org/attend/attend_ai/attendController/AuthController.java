@@ -24,25 +24,50 @@ private UserRepo userRepo;
     private BCryptPasswordEncoder encoder;
 
 
-    @PostMapping("/login")
+    // @PostMapping("/login")
+    // public ResponseEntity<?> login(@RequestBody LoginRequestDTO request) {
+    //     System.out.println("Login attempt - Email: " + request.getEmail());
+
+    //     EndUser user = userRepo.findByEmail(request.getEmail());
+    //     System.out.println("User found: " + (user != null ? user.getEmail() : "null"));
+
+    //     if (user != null) {
+    //         System.out.println("Password match: " + user.getPassword().equals(request.getPassword()));
+    //     }
+
+    //     if (user != null && user.getPassword().equals(request.getPassword())) {
+    //         return ResponseEntity.ok(Map.of(
+    //                 "status", "Login success",
+    //                 "role", user.getRole(),
+    //                 "userId", user.getUserRefId()
+    //         ));
+    //     }
+    //     return ResponseEntity.badRequest().body(Map.of("status", "Invalid credentials"));
+    // }
+   @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO request) {
-        System.out.println("Login attempt - Email: " + request.getEmail());
 
-        EndUser user = userRepo.findByEmail(request.getEmail());
-        System.out.println("User found: " + (user != null ? user.getEmail() : "null"));
+    System.out.println("Login attempt - Email: " + request.getEmail());
 
-        if (user != null) {
-            System.out.println("Password match: " + user.getPassword().equals(request.getPassword()));
-        }
+    EndUser user = userRepo.findByEmail(request.getEmail());
 
-        if (user != null && user.getPassword().equals(request.getPassword())) {
-            return ResponseEntity.ok(Map.of(
-                    "status", "Login success",
-                    "role", user.getRole(),
-                    "userId", user.getUserRefId()
-            ));
-        }
-        return ResponseEntity.badRequest().body(Map.of("status", "Invalid credentials"));
+    if (user == null) {
+        return ResponseEntity.badRequest().body(Map.of("status", "User not found"));
     }
 
+    System.out.println("DB Email: " + user.getEmail());
+    System.out.println("DB Password: " + user.getPassword());
+    System.out.println("Input Password: " + request.getPassword());
+
+    if (encoder.matches(request.getPassword(), user.getPassword())) {
+        return ResponseEntity.ok(Map.of(
+                "status", "Login success",
+                "role", user.getRole(),
+                "userId", user.getUserRefId()
+        ));
     }
+
+    return ResponseEntity.badRequest().body(Map.of("status", "Invalid credentials"));
+}
+
+}

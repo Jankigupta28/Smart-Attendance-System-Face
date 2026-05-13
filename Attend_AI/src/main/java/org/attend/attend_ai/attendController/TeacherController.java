@@ -7,6 +7,7 @@ import org.attend.attend_ai.model.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,9 @@ public class TeacherController {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     @GetMapping
     public ResponseEntity<?> getAllTeachers(){
@@ -48,7 +52,8 @@ public class TeacherController {
 
         EndUser user = new EndUser();
         user.setEmail(teacher.getEmail());
-        user.setPassword(teacher.getPassword());
+        // user.setPassword(teacher.getPassword());
+        user.setPassword(encoder.encode(teacher.getPassword()));
         user.setUserRefId(teacher.getTeacherId());
         user.setRole("TEACHER");
         userRepo.save(user);

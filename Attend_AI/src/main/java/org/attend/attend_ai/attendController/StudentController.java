@@ -7,12 +7,17 @@ import org.attend.attend_ai.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin
+// @CrossOrigin
+@CrossOrigin(origins = {
+    "http://127.0.0.1:5500",
+    "http://localhost:5500"
+})
 @RestController
 public class StudentController {
 
@@ -27,6 +32,9 @@ public class StudentController {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
     @PostMapping("/students")
     public ResponseEntity<Student> addStudent(@RequestBody Student student) {
         Student saved = service.addStudent(student);
@@ -34,7 +42,8 @@ public class StudentController {
 
         EndUser user = new EndUser();
         user.setEmail(student.getEmail());
-        user.setPassword(student.getPassword());
+        // user.setPassword(student.getPassword());
+        user.setPassword(encoder.encode(student.getPassword()));
         user.setUserRefId(student.getEnrollmentNumber());
         user.setRole("STUDENT");
         userRepo.save(user);
