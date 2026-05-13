@@ -190,3 +190,10 @@ th {
     font-weight: 600;
     color: #6C63FF;
 }
+
+
+.dashboard-title {
+    display: flex;
+    flex-direction: column;
+}
+

@@ -14,6 +14,7 @@ fetch(`http://localhost:8080/teacher/teacher/${teacherId}`)
     .then(res => res.json())
     .then(teacher => {
         document.getElementById("teacherName").innerText = teacher.name;
+        document.getElementById("welcomeTeacherName").innerText = teacher.name;
     });
    
 

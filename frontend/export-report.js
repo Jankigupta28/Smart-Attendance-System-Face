@@ -1,12 +1,25 @@
-/* ALL ATTENDANCE DATA */
-let attendanceData = JSON.parse(localStorage.getItem("attendanceHistory")) || [];
-let filteredData = attendanceData;
+let attendanceData = [];
+let filteredData = [];
 
-/* LOAD TABLE */
-renderTable(filteredData);
-updateSummary(filteredData);
+/* LOAD ALL ATTENDANCE */
+window.onload = function () {
 
-/* TABLE FUNCTION */
+    fetch("http://localhost:8080/attendance/all")
+        .then(res => res.json())
+        .then(data => {
+
+            attendanceData = data;
+            filteredData = data;
+
+            renderTable(filteredData);
+            updateSummary(filteredData);
+        })
+        .catch(err => {
+            console.error("Error:", err);
+        });
+};
+
+/* TABLE */
 function renderTable(data) {
     const previewBody = document.getElementById("previewBody");
     previewBody.innerHTML = "";
@@ -20,48 +33,49 @@ function renderTable(data) {
         `;
         return;
     }
-
-    data.slice().reverse().forEach(record => {
+    data.slice().reverse().forEach(att => {
+        const dateObj = new Date(att.timeStamp);
         previewBody.innerHTML += `
             <tr>
-                <td>${record.name}</td>
-                <td>${record.roll}</td>
-                <td>${record.date}</td>
-                <td>${record.time}</td>
-                <td class="${record.status.toLowerCase()}">
-                    ${record.status}
+                <td>${att.student.name}</td>
+                <td>${att.student.enrollmentNumber}</td>
+                <td>${dateObj.toLocaleDateString()}</td>
+                <td>${dateObj.toLocaleTimeString()}</td>
+                <td class="${att.status.toLowerCase()}">
+                    ${att.status}
                 </td>
             </tr>
         `;
     });
 }
 
-
 /* SUMMARY */
 function updateSummary(data) {
     document.getElementById("totalRecords").innerText = data.length;
-    const present = data.filter(r => r.status === "Present").length;
-    const absent = data.filter(r => r.status === "Absent").length;
+    const present = data.filter(a => a.status === "PRESENT").length;
+    const absent = data.filter(a => a.status === "ABSENT").length;
     document.getElementById("presentCount").innerText = present;
     document.getElementById("absentCount").innerText = absent;
 }
 
 /* FILTER DATE */
 function filterByDate() {
-    const selectedDate = document.getElementById("reportDate").value;
-    if (selectedDate === "") {
+    const selectedDate =
+        document.getElementById("reportDate").value;
+    if (!selectedDate) {
         filteredData = attendanceData;
         renderTable(filteredData);
         updateSummary(filteredData);
         return;
     }
 
-    const formattedDate = new Date(selectedDate).toLocaleDateString();
-    filteredData = attendanceData.filter(record =>
-        record.date === formattedDate
-    );
-    renderTable(filteredData);
-    updateSummary(filteredData);
+    fetch(`http://localhost:8080/attendance/date?date=${selectedDate}`)
+        .then(res => res.json())
+        .then(data => {
+            filteredData = data;
+            renderTable(filteredData);
+            updateSummary(filteredData);
+        });
 }
 
 /* EXPORT CSV */
@@ -70,31 +84,40 @@ function exportCSV() {
         alert("No Records To Export");
         return;
     }
-    let csv = `Name,Roll No,Date,Time,Status
+    let csv =
+        `Name,Enrollment Number,Date,Time,Status
 `;
-
-    filteredData.forEach(record => {
+    filteredData.forEach(att => {
+        const dateObj = new Date(att.timeStamp);
         csv +=
-            `${record.name},
-             ${record.roll},
-             ${record.date},
-             ${record.time},
-             ${record.status}
+            `${att.student.name},
+            ${att.student.enrollmentNumber},
+            ${dateObj.toLocaleDateString()},
+            ${dateObj.toLocaleTimeString()},
+            ${att.status}
 `;
     });
     const blob = new Blob([csv], {
-            type: "text/csv"
-        });
+        type: "text/csv"
+    });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = "attendance-report.csv";
     link.click();
-    alert("Report Exported Successfully ✅");
+    alert("CSV Exported Successfully ✅");
+}
+
+/* EXPORT PDF */
+function exportPDF() {
+    const teacherId = localStorage.getItem("userId");
+    window.open(
+        `http://localhost:8080/report/teacher/${teacherId}`,
+        "_blank"
+    );
 }
 
 /* BACK */
 function goBack() {
-
     window.location.href =
         "admin-dashboard.html";
 }
