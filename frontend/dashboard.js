@@ -51,8 +51,8 @@ console.log("UserId from localStorage:", enrollmentNumber);
                 att.timeStamp.startsWith(today)
             );
 
-            document.getElementById("attendanceStatus").innerHTML =
-                todayRecord ? "Present ✅" : "Absent";
+            document.getElementById("attendanceStatus").innerHTML = 
+                todayRecord ? "Present ✅" : "Absent ❌";
 
             document.getElementById("checkInTime").innerText =
                 todayRecord
