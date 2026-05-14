@@ -28,17 +28,21 @@ if (loginForm) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email: email, password: password })
 })
+
 .then(res => {
     if (!res.ok) {
         return res.text().then(text => { throw new Error(text) });
     }
     return res.json();
 })
+
 .then(data => {
     if (data.status === "Login success") {
         // Use 'userId' consistently
       
         localStorage.setItem("userId", data.userId);
+        localStorage.setItem("teacherName", data.name);  // ⭐ ADD THIS
+        
         console.log("Saved userId:", localStorage.getItem("userId"));
         if (data.role === "TEACHER") {
             window.location.href = "admin-dashboard.html";

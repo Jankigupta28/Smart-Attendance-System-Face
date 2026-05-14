@@ -61,6 +61,15 @@ body {
     color: #6C63FF;
 }
 
+.welcome-banner {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid black;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+    margin-bottom: 30px;
+}
+
 .summary-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -190,7 +199,6 @@ th {
     font-weight: 600;
     color: #6C63FF;
 }
-
 
 .dashboard-title {
     display: flex;

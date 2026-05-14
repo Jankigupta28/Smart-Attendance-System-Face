@@ -16,7 +16,6 @@ public class Teacher {
     @Id
 
     private String teacherId;
-
     private String name;
     private String department;
     @OneToMany(mappedBy = "teacher")
@@ -24,7 +23,6 @@ public class Teacher {
     private List<Course> courses;
     private String email;
     private String password;
-
 
 
     public void setTeacherId(String teacherId) {
@@ -49,5 +47,12 @@ public class Teacher {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+    return name;
+    }
+    public void setName(String name) {
+    this.name = name;
     }
 }

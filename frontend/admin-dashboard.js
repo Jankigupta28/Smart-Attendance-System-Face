@@ -5,18 +5,26 @@ let allStudents = [];
 
 window.addEventListener("load", () => {
     const teacherId = localStorage.getItem("userId");
-   if (!teacherId) {
+    console.log("Teacher ID:", teacherId); // new
+    if (!teacherId) {
         window.location.href = "login.html";
         return;
-    } 
+    }
 
-fetch(`http://localhost:8080/teacher/teacher/${teacherId}`)
-    .then(res => res.json())
-    .then(teacher => {
-        document.getElementById("teacherName").innerText = teacher.name;
-        document.getElementById("welcomeTeacherName").innerText = teacher.name;
-    });
-   
+    fetch(`http://localhost:8080/teacher/${teacherId}`)
+        .then(res => {
+            console.log("Teacher response status:", res.status); // 👈 HERE
+            return res.json();
+        })
+        // .then(teacher => {
+        .then(teacher => {
+            if (!teacher || !teacher.name) {
+                console.error("Teacher not found or invalid response", teacher);
+                return;
+            }
+            document.getElementById("teacherName").innerText = teacher.name;
+            document.getElementById("welcomeName").innerText = `Welcome, ${teacher.name} 👋`;
+        })
 
     // TOTAL STUDENTS
     fetch("http://localhost:8080/students")
@@ -109,11 +117,11 @@ function startSession() {
                 radius: radius
             })
         })
-        .then(res => res.text())
-        .then(data => {
-            alert("Session Started ✅");
-            document.getElementById("sessionStatus").innerText = "Session Active ✅";
-        });
+            .then(res => res.text())
+            .then(data => {
+                alert("Session Started ✅");
+                document.getElementById("sessionStatus").innerText = "Session Active ✅";
+            });
     });
 }
 
@@ -124,9 +132,9 @@ function endSession() {
     fetch(`http://localhost:8080/class/session/end?teacherId=${teacherId}&courseId=${courseId}`, {
         method: "POST"
     })
-    .then(res => res.text())
-    .then(data => {
-        alert("Session Ended ❌");
-        document.getElementById("sessionStatus").innerText = "No Active Session";
-    });
+        .then(res => res.text())
+        .then(data => {
+            alert("Session Ended ❌");
+            document.getElementById("sessionStatus").innerText = "No Active Session";
+        });
 }
