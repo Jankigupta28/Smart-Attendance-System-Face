@@ -8,8 +8,7 @@
 
     <link rel="stylesheet" href="export-report.css">
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
@@ -65,12 +64,19 @@
             <!-- BUTTONS -->
             <button onclick="filterByDate()" class="filter-btn">
                 <i class="fas fa-filter"></i>
-                Load Records
+                View Records
             </button>
+
             <button onclick="exportCSV()" class="export-btn">
                 <i class="fas fa-download"></i>
                 Export CSV Report
+            </button> 
+
+            <button onclick="exportPDF()" class="export-btn">
+                <i class="fas fa-file-pdf"></i>
+                Export PDF Report
             </button>
+
             <button onclick="goBack()" class="back-btn">
                 <i class="fas fa-arrow-left"></i>
                 Back

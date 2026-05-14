@@ -6,18 +6,22 @@ import org.attend.attend_ai.model.Student;
 import org.openpdf.text.Document;
 import org.openpdf.text.Paragraph;
 import org.openpdf.text.pdf.PdfPTable;
-import org.openpdf.text.pdf.PdfTable;
+// import org.openpdf.text.pdf.PdfTable;
 import org.openpdf.text.pdf.PdfWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
 
+// @RestController
+// public class ReportsController {
+@CrossOrigin(origins = "*")
 @RestController
 public class ReportsController {
 
@@ -48,7 +52,12 @@ public class ReportsController {
         document.add(table);
         document.close();
 
-        return ResponseEntity.ok(out.toByteArray());
+        // return ResponseEntity.ok(out.toByteArray());
+        return ResponseEntity.ok()
+        .header("Content-Disposition",
+                "attachment; filename=attendance-report.pdf")
+        .header("Content-Type", "application/pdf")
+        .body(out.toByteArray());
     }
 
     @GetMapping("/report/teacher/{teacherId}")
@@ -78,7 +87,12 @@ public class ReportsController {
         document.add(table);
         document.close();
 
-        return ResponseEntity.ok(out.toByteArray());
+        // return ResponseEntity.ok(out.toByteArray());
+        return ResponseEntity.ok()
+        .header("Content-Disposition",
+                "attachment; filename=attendance-report.pdf")
+        .header("Content-Type", "application/pdf")
+        .body(out.toByteArray());
     }
 
     @GetMapping("/course/{courseId}/percentage")

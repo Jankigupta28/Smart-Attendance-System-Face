@@ -23,7 +23,7 @@ console.log("UserId from localStorage:", enrollmentNumber);
         .then(student => {
 
             document.getElementById("welcomeName").innerHTML =
-                student.name + " 👋";
+                "Welcome, " + student.name + " 👋";
 
             document.getElementById("userNameTop").innerText =
                 student.name;

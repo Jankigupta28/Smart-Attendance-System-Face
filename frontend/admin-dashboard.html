@@ -19,8 +19,9 @@
             <ul>
                 <li class="active"><i class="fas fa-chart-line"></i> Dashboard</li>
                 <li><i class="fas fa-users"></i> Students</li>
-                <li><i class="fas fa-calendar-check"></i> Attendance Records</li>
-                <li><i class="fas fa-file-export"></i> Export Reports</li>
+                <li onclick="location.href='Attendance Records.html'"><i class="fas fa-calendar-check"></i> Attendance
+                    Records</li>
+                <li onclick="location.href='export-report.html'"><i class="fas fa-file-export"></i> Export Reports</li>
                 <li onclick="logout()"><i class="fas fa-right-from-bracket"></i> Logout</li>
             </ul>
         </aside>
@@ -30,11 +31,15 @@
             <div class="top-header">
                 <h1>Teacher Dashboard</h1>
                 <div class="admin-user">
-                    <i class="fas fa-user-circle"></i>
-                   <!-- ✅ Naya -->
-<span id="teacherName">Teacher</span>
+                    <i class="fas fa-user-circle admin-icon"></i>
+                   <span id="teacherName">Teacher</span>
                 </div>
             </div>
+            <section class="welcome-banner">
+                <div>
+                    <h2 id="welcomeName">Welcome, teacher 👋</h2>
+                </div>
+            </section>
 
             <section class="summary-grid">
                 <div class="summary-card">
@@ -58,22 +63,26 @@
                 </div>
             </section>
 
-<section class="session-section">
-    <h2>Class Session</h2>
-    <div class="session-controls">
-        <select id="courseSelect">
-            <option value="1">Mathematics</option>
-        </select>
-      
-        <button onclick="startSession()" class="start-btn">
-            <i class="fas fa-play"></i> Start Session
-        </button>
-        <button onclick="endSession()" class="end-btn">
-            <i class="fas fa-stop"></i> End Session
-        </button>
-    </div>
-    <p id="sessionStatus">No Active Session</p>
-</section>
+            <section class="session-section">
+                <h2>Class Session</h2>
+                <div class="session-controls">
+                    <select id="courseSelect">
+                        <option value="1">Mathematics</option>
+                        <option value="2">Physics</option>
+                        <option value="3">Chemistry</option>
+                        <option value="4">Geography</option>
+                        <option value="5">English</option>
+                    </select>
+
+                    <button onclick="startSession()" class="start-btn">
+                        <i class="fas fa-play"></i> Start Session
+                    </button>
+                    <button onclick="endSession()" class="end-btn">
+                        <i class="fas fa-stop"></i> End Session
+                    </button>
+                </div>
+                <p id="sessionStatus">No Active Session</p>
+            </section>
 
             <section class="filter-bar">
                 <input type="text" id="searchStudent" placeholder="Search student...">
