@@ -6,14 +6,16 @@ import org.attend.attend_ai.attendService.ClassSessionService;
 import org.attend.attend_ai.attendService.CourseService;
 import org.attend.attend_ai.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+@CrossOrigin
 
 @RestController
-public class AttendanceController {
+public  class AttendanceController {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -27,49 +29,71 @@ public class AttendanceController {
     @Autowired
     private ClassSessionService classSessionService;
 
-    @PostMapping("/mark")
-    public ResponseEntity<?> markAttendance(@RequestBody MarkAttendanceDTO markAttendanceDTO) {
-        String url = "http://localhost:5000/recognize";
-        Map<String, String> pythonRequest = new HashMap<>();
-        pythonRequest.put("imagePath", markAttendanceDTO.getImagePath());
+    @PostMapping("/attendance/mark-active")
+    public ResponseEntity<?> markAttendance(@RequestBody MarkAttendanceDTO dto) {
+        System.out.println("Initiating attendance process for Student: " + dto.getEnrollmentNumber());
 
-        String pythonResponse = restTemplate.postForObject(url, pythonRequest, String.class);
-
-
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, String> pyRes;
+        // 1. Face Recognition Verification via Python Flask Server
         try {
-            pyRes = mapper.readValue(pythonResponse, Map.class);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Python error");
-        }
+            String flaskUrl = "http://localhost:5000/recognize";
+            Map<String, String> payload = new HashMap<>();
+            payload.put("enrollmentNumber", dto.getEnrollmentNumber());
 
-        String recognizedId = pyRes.get("enrollmentNumber");
+            // Call the Flask service
+            Map<String, Object> flaskResponse = restTemplate.postForObject(flaskUrl, payload, Map.class);
 
-        if (recognizedId != null && recognizedId.equals(markAttendanceDTO.getEnrollmentNumber())) {
-            Course course = courseService.getCourseById(markAttendanceDTO.getCourseId());
-            String teacherId = course.getTeacher().getTeacherId();
-            ClassSession activeSession = classSessionService.getActiveSession(teacherId, markAttendanceDTO.getCourseId());
-
-            double distance = GeofencingUtils.calculateDistance(
-                    markAttendanceDTO.getCurrentLat(),
-                    markAttendanceDTO.getCurrentLng(),
-                    activeSession.getCenterLat(),
-                    activeSession.getCenterLng()
-            );
-
-            if (distance <= activeSession.getRadius()) {
-                if (attendanceService.isAttendanceAlreadyMarked(markAttendanceDTO.getEnrollmentNumber(), markAttendanceDTO.getCourseId())) {
-                    return ResponseEntity.badRequest().body("Already marked today");
-                }
-                attendanceService.saveAttendance(markAttendanceDTO.getEnrollmentNumber(),
-                        String.valueOf(markAttendanceDTO.getCourseId()));
-                return ResponseEntity.ok("Attendance marked successfully");
-            } else {
-                return ResponseEntity.badRequest().body("Outside allowed area");
+            if (flaskResponse == null || flaskResponse.get("enrollmentNumber") == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Face recognition failed: No response from verification server.");
             }
+
+            String recognizedId = flaskResponse.get("enrollmentNumber").toString();
+            if (!recognizedId.equals(dto.getEnrollmentNumber())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Identity mismatch: Face does not match the provided Enrollment Number.");
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Connection to Face Recognition service failed: " + e.getMessage());
         }
-        return ResponseEntity.badRequest().body("Face not recognized");
+
+        // 2. Retrieve the Currently Active Class Session
+        // Logic: We use the session's Course ID to ensure data integrity, ignoring potentially incorrect DTO values.
+        ClassSession activeSession = classSessionService.findCurrentActiveSession();
+        if (activeSession == null) {
+            return ResponseEntity.badRequest()
+                    .body("Access Denied: No active attendance session is currently running for this course.");
+        }
+
+        int verifiedCourseId = activeSession.getCourseId();
+        System.out.println("Attendance linked to Active Course ID: " + verifiedCourseId);
+
+        // 3. Geofencing/Location Verification
+        double distanceInMeters = GeofencingUtils.calculateDistance(
+                dto.getCurrentLat(), dto.getCurrentLng(),
+                activeSession.getCenterLat(), activeSession.getCenterLng()
+        );
+
+        if (distanceInMeters > activeSession.getRadius()) {
+            return ResponseEntity.badRequest()
+                    .body("Location Error: You are outside the designated campus radius (" + Math.round(distanceInMeters) + "m away).");
+        }
+
+        // 4. Record Attendance
+        // Final Step: Verify if attendance was already recorded to prevent duplicate entries.
+        if (attendanceService.isAttendanceAlreadyMarked(dto.getEnrollmentNumber(), (int) verifiedCourseId)) {
+            return ResponseEntity.badRequest()
+                    .body("Duplicate Entry: Attendance has already been recorded for this session.");
+        }
+
+        try {
+            attendanceService.saveAttendance(dto.getEnrollmentNumber(), String.valueOf(verifiedCourseId));
+            return ResponseEntity.ok("Success: Attendance successfully recorded for Course ID " + verifiedCourseId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Database Error: Failed to save attendance record.");
+        }
     }
 
     @GetMapping("/attendance/all")

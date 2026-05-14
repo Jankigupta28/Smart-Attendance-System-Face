@@ -101,3 +101,6 @@
 .btn-group .btn {
     flex: 1;
 }
+.face-preview-box {
+    position: relative; /* yeh zaroori hai overlay ke liye */
+}

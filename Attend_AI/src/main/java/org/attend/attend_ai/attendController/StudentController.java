@@ -7,6 +7,7 @@ import org.attend.attend_ai.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,9 @@ public class StudentController {
     @Autowired
     StudentService service;
 
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
     @GetMapping("/students")
     public ResponseEntity<List<Student>> getAllStudents() {
         return new ResponseEntity<>(service.getAllStudents(), HttpStatus.OK);
@@ -29,12 +33,14 @@ public class StudentController {
 
     @PostMapping("/students")
     public ResponseEntity<Student> addStudent(@RequestBody Student student) {
+        String encodedPassword = encoder.encode(student.getPassword());
+        student.setPassword(encodedPassword);
         Student saved = service.addStudent(student);
 
 
         EndUser user = new EndUser();
         user.setEmail(student.getEmail());
-        user.setPassword(student.getPassword());
+        user.setPassword(encodedPassword);
         user.setUserRefId(student.getEnrollmentNumber());
         user.setRole("STUDENT");
         userRepo.save(user);
@@ -61,6 +67,9 @@ public class StudentController {
     public ResponseEntity<Student> updateStudent(@RequestBody Student student, @PathVariable String enrollmentNumber){
         student.setEnrollmentNumber(enrollmentNumber);
         Student updated = service.updateStudent(student);
+        if (updated == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 

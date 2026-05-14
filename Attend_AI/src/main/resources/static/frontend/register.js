@@ -66,12 +66,15 @@ if (registerForm) {
                 })
             })
            .then(res => res.text())
+
 .then(() => {
-    localStorage.setItem("userId", rollNo); // ✅ add karo
+    localStorage.setItem("userId", rollNo); // ✅ yeh add karo
     alert("Registration Successful ✅");
     window.location.href = "login.html";
-});
-        }
+})
+.catch(err => console.error("Error:", err));
+          }
+
     });
 }   
         
