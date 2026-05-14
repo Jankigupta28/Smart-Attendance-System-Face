@@ -15,23 +15,32 @@ public class StudentService {
     StudentRepo repo;
 
     public List<Student> getAllStudents() {
-      return  repo.findAll();
+        return repo.findAll();
     }
 
     public Student addStudent(Student student) {
-      return repo.save(student);
+        return repo.save(student);
     }
 
     public Optional<Student> findStudent(String enrollmentNumber) {
-       return  repo.findByEnrollmentNumber(enrollmentNumber);
+        return repo.findByEnrollmentNumber(enrollmentNumber);
     }
 
     public void deleteStudent(String enrollmentNumber) {
-       repo.deleteByEnrollmentNumber(enrollmentNumber);
+        repo.deleteByEnrollmentNumber(enrollmentNumber);
     }
 
-    public Student updateStudent(Student student) {
-        repo.save(student);
-        return student;
+    public Student updateStudent(Student incomingData) {
+
+        return repo.findById(incomingData.getEnrollmentNumber()).map(existingStudent -> {
+
+
+            if (incomingData.getFaceEncoding() != null) {
+                existingStudent.setFaceEncoding(incomingData.getFaceEncoding());
+            }
+
+
+            return repo.save(existingStudent);
+        }).orElse(null);
     }
 }

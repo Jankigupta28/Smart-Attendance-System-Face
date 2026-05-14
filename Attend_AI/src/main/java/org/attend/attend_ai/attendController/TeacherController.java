@@ -50,13 +50,13 @@ public class TeacherController {
 
     @PostMapping
     public ResponseEntity<Teacher> addTeacher(@RequestBody Teacher teacher) {
-
-        Teacher saved = teacherService.addTeacher(teacher);
+        String encodedPassword = encoder.encode(teacher.getPassword());
+        teacher.setPassword(encodedPassword);
+      Teacher saved =   teacherService.addTeacher(teacher);
 
         EndUser user = new EndUser();
         user.setEmail(teacher.getEmail());
-        // user.setPassword(teacher.getPassword());
-        user.setPassword(encoder.encode(teacher.getPassword()));
+        user.setPassword(encodedPassword);
         user.setUserRefId(teacher.getTeacherId());
         user.setRole("TEACHER");
         userRepo.save(user);
