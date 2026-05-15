@@ -4,6 +4,7 @@ const saveFaceBtn = document.getElementById("saveFaceBtn");
 const sampleNumber = document.getElementById("sampleNumber");
 const progressFill = document.getElementById("progressFill");
 const canvas = document.getElementById("canvas");
+const MAX_SAMPLES = 5;
 
 let sampleCount = 0;
 let faceSamples = [];
