@@ -47,7 +47,34 @@ if (registerForm) {
                     semester: 1
                 })
             })
-                // .then(res => res.text())
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error("✅ Account already exists!\nPlease login instead of registering again 😊");
+                    }
+                    return res.text();
+                })
+
+                .then(() => {
+                    localStorage.setItem("userId", rollNo); // ✅ yeh add karo
+                    alert("Registration Successful ✅");
+                    window.location.href = "login.html";
+                })
+                .catch(err => {
+                    alert(err.message);
+                });
+        }
+        else {
+            fetch("http://localhost:8080/teacher", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    teacherId: rollNo,
+                    name: fullName,
+                    email: email,
+                    password: password,
+                    department: "CS"
+                })
+            })
                 .then(res => {
                     if (!res.ok) {
                         throw new Error("✅ Account already exists!\nPlease login instead of registering again 😊");
@@ -58,43 +85,12 @@ if (registerForm) {
                 .then(() => {
                     localStorage.setItem("userId", rollNo);
                     alert("Registration Successful ✅");
-                    window.location.href = "face-register.html";
+                    window.location.href = "login.html";
                 })
-                .catch (err => {
-                alert(err.message);
-            });
-}
-else {
-    fetch("http://localhost:8080/teacher", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            teacherId: rollNo,
-            name: fullName,
-            email: email,
-            password: password,
-            department: "CS"
-        })
-    })
-        // .then(res => res.text())
-        .then(res => {
-            if (!res.ok) {
-                throw new Error("✅ Account already exists!\nPlease login instead of registering again 😊");
-            }
-            return res.text();
-        })
-
-        .then(() => {
-            localStorage.setItem("userId", rollNo);
-            alert("Registration Successful ✅");
-            window.location.href = "login.html";
-        })
-        //         .catch(err => console.error("Error:", err));
-        // }
-        .catch(err => {
-             alert(err.message);
-        });
-    }
+                .catch(err => {
+                    alert(err.message);
+                });
+        }
 
     });
 }

@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface ClassSessionRepo extends JpaRepository<ClassSession,Long> {
 
     Optional<ClassSession> findByTeacherIdAndCourseIdAndIsActiveTrue(String teacherId,int courseId);
+
+    Optional<ClassSession> findFirstByIsActiveTrueOrderByStartTimeDesc();
 }

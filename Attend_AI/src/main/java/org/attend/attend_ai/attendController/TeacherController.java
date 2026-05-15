@@ -65,8 +65,7 @@ public class TeacherController {
 
         EndUser user = new EndUser();
         user.setEmail(teacher.getEmail());
-        // user.setPassword(teacher.getPassword());
-        user.setPassword(encoder.encode(teacher.getPassword()));
+        user.setPassword(encodedPassword);
         user.setUserRefId(teacher.getTeacherId());
         user.setRole("TEACHER");
         userRepo.save(user);

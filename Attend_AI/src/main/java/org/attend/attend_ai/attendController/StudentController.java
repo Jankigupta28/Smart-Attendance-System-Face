@@ -24,6 +24,9 @@ public class StudentController {
     @Autowired
     StudentService service;
 
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
     @GetMapping("/students")
     public ResponseEntity<List<Student>> getAllStudents() {
         return new ResponseEntity<>(service.getAllStudents(), HttpStatus.OK);
@@ -32,15 +35,11 @@ public class StudentController {
     @Autowired
     private UserRepo userRepo;
 
-    @Autowired
-    private BCryptPasswordEncoder encoder;
-
     @PostMapping("/students")
     public ResponseEntity<Student> addStudent(@RequestBody Student student) {
         // new
         if (service.existsByEmail(student.getEmail()) ||
                 service.existsByEnrollmentNumber(student.getEnrollmentNumber())) {
-
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(null);
@@ -48,12 +47,12 @@ public class StudentController {
         
         String encodedPassword = encoder.encode(student.getPassword());
         student.setPassword(encodedPassword);
+        
         Student saved = service.addStudent(student);
 
         EndUser user = new EndUser();
         user.setEmail(student.getEmail());
-        // user.setPassword(student.getPassword());
-        user.setPassword(encoder.encode(student.getPassword()));
+        user.setPassword(encodedPassword);
         user.setUserRefId(student.getEnrollmentNumber());
         user.setRole("STUDENT");
         userRepo.save(user);
@@ -81,8 +80,10 @@ public class StudentController {
     public ResponseEntity<Student> updateStudent(@RequestBody Student student, @PathVariable String enrollmentNumber) {
         student.setEnrollmentNumber(enrollmentNumber);
         Student updated = service.updateStudent(student);
+        if (updated == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
-
 
 }

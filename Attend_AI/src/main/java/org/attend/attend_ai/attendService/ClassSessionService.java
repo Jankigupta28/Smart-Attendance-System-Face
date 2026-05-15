@@ -15,8 +15,11 @@ public class ClassSessionService {
     @Autowired
     private ClassSessionRepo classSessionRepo;
 
-
-    public void startService(StartSessionRequestDTO request) {
+    public ClassSession findCurrentActiveSession() {
+        return classSessionRepo.findFirstByIsActiveTrueOrderByStartTimeDesc()
+                .orElse(null);
+    }
+    public Object startService(StartSessionRequestDTO request) {
 
         Optional<ClassSession> existing = classSessionRepo.findByTeacherIdAndCourseIdAndIsActiveTrue(
                 request.getTeacherId(), request.getCourseId()
@@ -34,7 +37,8 @@ public class ClassSessionService {
         session.setRadius(request.getRadius());
         session.setStartTime(LocalDateTime.now());
         session.setActive(true);
-        classSessionRepo.save(session);
+        return     classSessionRepo.save(session);
+
     }
 
     public void endSession(String teacherId, int courseId) {

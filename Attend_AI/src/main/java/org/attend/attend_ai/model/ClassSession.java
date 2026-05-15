@@ -88,4 +88,6 @@ public class ClassSession {
     public boolean isActive() {
         return isActive;
     }
+
+
 }

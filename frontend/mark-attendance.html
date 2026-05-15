@@ -14,17 +14,15 @@
 
         <h2>Mark Attendance</h2>
 
+
         <div class="card">
             <h3>Step 1: Location Check</h3>
-
-            <div class="location-box">
+            <div class="location-box" style="display: flex; align-items: center; gap: 15px;">
                 <div class="icon">📍</div>
-
-                <div>
-                    <p id="locationStatus">Checking location...</p>
-                    <small id="locationDetails"></small>
+                <div style="flex-grow: 1;">
+                    <p id="locationStatus" style="margin: 0; font-weight: bold;">Checking location...</p>
+                    <small id="locationDetails" style="color: #666;"></small>
                 </div>
-
                 <div id="locationTick">❌</div>
             </div>
         </div>
