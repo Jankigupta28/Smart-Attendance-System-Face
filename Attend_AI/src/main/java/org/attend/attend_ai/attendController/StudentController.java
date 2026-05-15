@@ -15,8 +15,8 @@ import java.util.Optional;
 
 // @CrossOrigin
 @CrossOrigin(origins = {
-    "http://127.0.0.1:5500",
-    "http://localhost:5500"
+        "http://127.0.0.1:5500",
+        "http://localhost:5500"
 })
 @RestController
 public class StudentController {
@@ -37,10 +37,18 @@ public class StudentController {
 
     @PostMapping("/students")
     public ResponseEntity<Student> addStudent(@RequestBody Student student) {
+        // new
+        if (service.existsByEmail(student.getEmail()) ||
+                service.existsByEnrollmentNumber(student.getEnrollmentNumber())) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(null);
+        }
+        
         String encodedPassword = encoder.encode(student.getPassword());
         student.setPassword(encodedPassword);
+        
         Student saved = service.addStudent(student);
-
 
         EndUser user = new EndUser();
         user.setEmail(student.getEmail());
@@ -53,9 +61,9 @@ public class StudentController {
     }
 
     @GetMapping("/student/{enrollmentNumber}")
-    public ResponseEntity<Student> findStudent(@PathVariable String enrollmentNumber){
+    public ResponseEntity<Student> findStudent(@PathVariable String enrollmentNumber) {
         Optional<Student> s = service.findStudent(enrollmentNumber);
-        if(s.isEmpty())
+        if (s.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(null);
         else
@@ -63,12 +71,13 @@ public class StudentController {
     }
 
     @DeleteMapping("/students/{enrollmentNumber}")
-    public ResponseEntity<String> deleteStudent(@PathVariable String enrollmentNumber){
+    public ResponseEntity<String> deleteStudent(@PathVariable String enrollmentNumber) {
         service.deleteStudent(enrollmentNumber);
         return new ResponseEntity<>("Deleted", HttpStatus.OK);
     }
+
     @PutMapping("/students/{enrollmentNumber}")
-    public ResponseEntity<Student> updateStudent(@RequestBody Student student, @PathVariable String enrollmentNumber){
+    public ResponseEntity<Student> updateStudent(@RequestBody Student student, @PathVariable String enrollmentNumber) {
         student.setEnrollmentNumber(enrollmentNumber);
         Student updated = service.updateStudent(student);
         if (updated == null) {

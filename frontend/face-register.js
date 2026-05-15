@@ -3,8 +3,9 @@ const captureBtn = document.getElementById("captureBtn");
 const saveFaceBtn = document.getElementById("saveFaceBtn");
 const sampleNumber = document.getElementById("sampleNumber");
 const progressFill = document.getElementById("progressFill");
-
+const canvas = document.getElementById("canvas");
 const MAX_SAMPLES = 5;
+
 let faceSamples = [];
 let detectionInterval = null;
 
@@ -99,7 +100,7 @@ captureBtn.addEventListener("click", async () => {
 // ── Save Face Data (Flask + Spring Boot Handshake) ─────────────
 saveFaceBtn.addEventListener("click", async () => {
     if (faceSamples.length < MAX_SAMPLES) {
-        alert("Pehle 5 samples capture karein!");
+        alert("Please capture at least 5 face samples before proceeding.");
         return;
     }
 

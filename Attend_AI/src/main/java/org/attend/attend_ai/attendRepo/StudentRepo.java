@@ -11,4 +11,8 @@ import java.util.Optional;
 public interface StudentRepo extends JpaRepository<Student, String> {
     Optional<Student> findByEnrollmentNumber(String enrollmentNumber);
     void deleteByEnrollmentNumber(String enrollmentNumber);
+
+    // new
+    boolean existsByEmail(String email);
+    boolean existsByEnrollmentNumber(String enrollmentNumber);
 }

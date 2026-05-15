@@ -22,7 +22,7 @@ public class TeacherService {
     }
 
     public Teacher addTeacher(Teacher teacher) {
-       return teacherRepo.save(teacher);
+        return teacherRepo.save(teacher);
     }
 
     public void deleteTeacher(String teacherId) {
@@ -31,5 +31,14 @@ public class TeacherService {
 
     public Teacher updateTeacher(Teacher teacher) {
         return teacherRepo.save(teacher);
+    }
+
+    // new
+    public boolean existsByEmail(String email) {
+        return teacherRepo.existsByEmail(email);
+    }
+
+    public boolean existsByTeacherId(String teacherId) {
+        return teacherRepo.existsByTeacherId(teacherId);
     }
 }

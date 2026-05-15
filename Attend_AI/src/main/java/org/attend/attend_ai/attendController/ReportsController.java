@@ -28,20 +28,19 @@ public class ReportsController {
     @Autowired
     private ReportsService reportsService;
 
-
     @GetMapping("/report/student/{enrollmentNumber}")
-    public ResponseEntity<byte[]> getStudentReport(@PathVariable String enrollmentNumber){
-        List<Attendance > student =  reportsService.findStudent(enrollmentNumber);
+    public ResponseEntity<byte[]> getStudentReport(@PathVariable String enrollmentNumber) {
+        List<Attendance> student = reportsService.findStudent(enrollmentNumber);
         Document document = new Document();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        PdfWriter.getInstance(document,out);
+        PdfWriter.getInstance(document, out);
         document.open();
         Paragraph para = new Paragraph("Attendance Report - " + enrollmentNumber);
         document.add(para);
         PdfPTable table = new PdfPTable(3);
-                table.addCell("Course Name");
-                table.addCell("Date");
-                table.addCell("Status");
+        table.addCell("Course Name");
+        table.addCell("Date");
+        table.addCell("Status");
 
         for (Attendance att : student) {
             table.addCell(att.getCourse().getCourseName());
@@ -54,18 +53,18 @@ public class ReportsController {
 
         // return ResponseEntity.ok(out.toByteArray());
         return ResponseEntity.ok()
-        .header("Content-Disposition",
-                "attachment; filename=attendance-report.pdf")
-        .header("Content-Type", "application/pdf")
-        .body(out.toByteArray());
+                .header("Content-Disposition",
+                        "attachment; filename=attendance-report.pdf")
+                .header("Content-Type", "application/pdf")
+                .body(out.toByteArray());
     }
 
     @GetMapping("/report/teacher/{teacherId}")
-    public ResponseEntity<byte[]> getAllStudentReport(@PathVariable String teacherId){
+    public ResponseEntity<byte[]> getAllStudentReport(@PathVariable String teacherId) {
         List<Attendance> attendanceList = reportsService.getAllStudentReport(teacherId);
         Document document = new Document();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        PdfWriter.getInstance(document,out);
+        PdfWriter.getInstance(document, out);
         document.open();
         Paragraph para = new Paragraph("Attendance Report - " + teacherId);
         document.add(para);
@@ -76,12 +75,36 @@ public class ReportsController {
         table.addCell("Date");
         table.addCell("Status");
 
+        // for (Attendance att : attendanceList) {
+        // table.addCell(att.getStudent().getEnrollmentNumber());
+        // table.addCell(att.getStudent().getName());
+        // table.addCell(att.getCourse().getCourseName());
+        // table.addCell(att.getTimeStamp().toString());
+        // table.addCell(att.getStatus());
+        // }
+        System.out.println("Attendance Size: " + attendanceList.size());
         for (Attendance att : attendanceList) {
-            table.addCell(att.getStudent().getEnrollmentNumber());
-            table.addCell(att.getStudent().getName());
-            table.addCell(att.getCourse().getCourseName());
-            table.addCell(att.getTimeStamp().toString());
-            table.addCell(att.getStatus());
+            String enrollment = att.getStudent() != null
+                    ? att.getStudent().getEnrollmentNumber()
+                    : "N/A";
+            String name = att.getStudent() != null
+                    ? att.getStudent().getName()
+                    : "N/A";
+            String course = att.getCourse() != null
+                    ? att.getCourse().getCourseName()
+                    : "N/A";
+            String date = att.getTimeStamp() != null
+                    ? att.getTimeStamp().toString()
+                    : "N/A";
+            String status = att.getStatus() != null
+                    ? att.getStatus().toString()
+                    : "N/A";
+
+            table.addCell(enrollment);
+            table.addCell(name);
+            table.addCell(course);
+            table.addCell(date);
+            table.addCell(status);
         }
 
         document.add(table);
@@ -89,10 +112,10 @@ public class ReportsController {
 
         // return ResponseEntity.ok(out.toByteArray());
         return ResponseEntity.ok()
-        .header("Content-Disposition",
-                "attachment; filename=attendance-report.pdf")
-        .header("Content-Type", "application/pdf")
-        .body(out.toByteArray());
+                .header("Content-Disposition",
+                        "attachment; filename=attendance-report.pdf")
+                .header("Content-Type", "application/pdf")
+                .body(out.toByteArray());
     }
 
     @GetMapping("/course/{courseId}/percentage")
