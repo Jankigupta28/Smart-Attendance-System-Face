@@ -34,10 +34,10 @@ captureBtn.addEventListener("click", () => {
         captureBtn.innerText = "Completed ✅";
     }
 });
-/* SAVE FACE */
-saveFaceBtn.addEventListener("click", () => {
-    if (sampleCount < 5) {
-        alert("Capture 5 Samples First");
+// ── Save Face Data (Flask + Spring Boot Handshake) ─────────────
+saveFaceBtn.addEventListener("click", async () => {
+    if (faceSamples.length < MAX_SAMPLES) {
+        alert("Please capture at least 5 face samples before proceeding.");
         return;
     }
     const enrollmentNumber = localStorage.getItem("userId");

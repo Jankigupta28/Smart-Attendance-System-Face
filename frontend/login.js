@@ -41,7 +41,7 @@ if (loginForm) {
         // Use 'userId' consistently
       
         localStorage.setItem("userId", data.userId);
-        localStorage.setItem("teacherName", data.name);  // ⭐ ADD THIS
+        localStorage.setItem("teacherName", data.name);
         
         console.log("Saved userId:", localStorage.getItem("userId"));
         if (data.role === "TEACHER") {

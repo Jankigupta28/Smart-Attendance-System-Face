@@ -50,7 +50,17 @@ public class TeacherController {
 
     @PostMapping
     public ResponseEntity<Teacher> addTeacher(@RequestBody Teacher teacher) {
+        // new
+        if (teacherService.existsByEmail(teacher.getEmail()) ||
+                teacherService.existsByTeacherId(teacher.getTeacherId())) {
 
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(null);
+        }
+        
+        String encodedPassword = encoder.encode(teacher.getPassword());
+        teacher.setPassword(encodedPassword);
         Teacher saved = teacherService.addTeacher(teacher);
 
         EndUser user = new EndUser();

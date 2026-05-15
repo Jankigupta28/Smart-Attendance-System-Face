@@ -11,4 +11,8 @@ public interface TeacherRepo extends JpaRepository<Teacher,String> {
     Optional<Teacher> findByTeacherId(String teacherId);
 
     void deleteByTeacherId(String teacherId);
+
+    // new
+    boolean existsByEmail(String email);
+    boolean existsByTeacherId(String teacherId);
 }

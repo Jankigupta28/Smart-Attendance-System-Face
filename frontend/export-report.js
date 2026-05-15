@@ -84,22 +84,17 @@ function exportCSV() {
         alert("No Records To Export");
         return;
     }
-    let csv =
-        `Name,Enrollment Number,Date,Time,Status
-`;
+    let csv = `Name,Enrollment Number,Date,Time,Status\n`;
+
     filteredData.forEach(att => {
         const dateObj = new Date(att.timeStamp);
-        csv +=
-            `${att.student.name},
-            ${att.student.enrollmentNumber},
-            ${dateObj.toLocaleDateString()},
-            ${dateObj.toLocaleTimeString()},
-            ${att.status}
-`;
+        csv +=`${att.student.name},${att.student.enrollmentNumber},${dateObj.toLocaleDateString()},${dateObj.toLocaleTimeString()},${att.status}\n`;
     });
+
     const blob = new Blob([csv], {
         type: "text/csv"
     });
+
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = "attendance-report.csv";

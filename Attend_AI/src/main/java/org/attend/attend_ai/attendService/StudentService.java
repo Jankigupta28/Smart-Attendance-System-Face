@@ -1,6 +1,5 @@
 package org.attend.attend_ai.attendService;
 
-
 import org.attend.attend_ai.attendRepo.StudentRepo;
 import org.attend.attend_ai.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +29,24 @@ public class StudentService {
        repo.deleteByEnrollmentNumber(enrollmentNumber);
     }
 
-    public Student updateStudent(Student student) {
-        repo.save(student);
-        return student;
+    public Student updateStudent(Student incomingData) {
+
+        return repo.findById(incomingData.getEnrollmentNumber()).map(existingStudent -> {
+
+            if (incomingData.getFaceEncoding() != null) {
+                existingStudent.setFaceEncoding(incomingData.getFaceEncoding());
+            }
+
+            return repo.save(existingStudent);
+        }).orElse(null);
+    }
+
+    // new
+    public boolean existsByEmail(String email) {
+        return repo.existsByEmail(email);
+    }
+
+    public boolean existsByEnrollmentNumber(String enrollmentNumber) {
+        return repo.existsByEnrollmentNumber(enrollmentNumber);
     }
 }
