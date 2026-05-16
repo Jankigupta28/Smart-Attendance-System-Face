@@ -137,9 +137,7 @@ saveFaceBtn.addEventListener("click", async () => {
 
             if (springRes.ok) {
                 alert("Face Profile Registered Successfully! ✅");
-                localStorage.removeItem("userId"); // Clean up
-
-                // Ye raha aapka Login Page Redirect
+                localStorage.removeItem("userId"); 
                 window.location.href = "login.html";
             } else {
                 alert("Database Update Failed! Check Spring Boot.");

@@ -57,7 +57,7 @@ if (registerForm) {
                 .then(() => {
                     localStorage.setItem("userId", rollNo); // ✅ yeh add karo
                     alert("Registration Successful ✅");
-                    window.location.href = "login.html";
+                    window.location.href = "face-register.html";
                 })
                 .catch(err => {
                     alert(err.message);
